@@ -2,6 +2,7 @@
   "name": "used-car-dealership",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --env-file=.env server.js",
