@@ -28,14 +28,20 @@ try {
  * The connection string format is:
  * postgresql://username:password@host:port/database
  */
-const useSSL = process.env.USE_SSL === 'true';
+const dbUrl = process.env.DB_URL;
+const isLocalDb = dbUrl
+    ? /@(localhost|127\.0\.0\.1)(:\d+)?\//i.test(dbUrl)
+    : false;
+const useSSL = process.env.USE_SSL
+    ? process.env.USE_SSL === 'true'
+    : !isLocalDb;
 
-if (!process.env.DB_URL) {
+if (!dbUrl) {
     throw new Error("DB_URL is not defined in environment variables");
 }
 
 const pool = new Pool({ 
-    connectionString: process.env.DB_URL, 
+    connectionString: dbUrl, 
     ssl: useSSL 
     ? { 
         rejectUnauthorized: true, 
@@ -45,7 +51,7 @@ const pool = new Pool({
 });
 
 console.log("USE_SSL:", process.env.USE_SSL);
-console.log("SSL Enabled:", process.env.USE_SSL === 'true');
+console.log("SSL Enabled:", useSSL);
 
 /**
  * Since we will modify the normal pool object in development mode, we need to create and

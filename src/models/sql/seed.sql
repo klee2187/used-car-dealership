@@ -1,5 +1,5 @@
 
--- Database seed file for student course catalog
+-- Database seed file for used car dealership application
 -- This file creates tables and inserts all initial data
 
 BEGIN;
@@ -90,17 +90,26 @@ CREATE TABLE contact_messages (
 );
 
 
--- Insert departments
+-- Insert users
 
 
-
--- Insert courses
-
-
--- Insert faculty
+-- Insert categories
 
 
--- Insert catalog entries
+-- Insert vehicles
+
+
+-- Insert vehicle images
+
+
+-- Insert reviews
+
+
+-- Insert service requests
+
+
+-- Insert contact messages
+
 
 
 COMMIT;
