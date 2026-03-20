@@ -3,6 +3,7 @@ import path from 'path';
 import { Pool } from 'pg';
 import { fileURLToPath } from 'url';
 
+// Determine the directory of the current file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -17,17 +18,7 @@ try {
     console.warn("Failed to read CA certificate:", error.message);
 }
 
-/**
- * Connection pool for PostgreSQL database.
- *
- * A connection pool maintains a set of reusable database connections
- * to avoid the overhead of creating new connections for each request.
- * This improves performance and reduces load on the database server.
- *
- * Uses a connection string from environment variables for simplified setup.
- * The connection string format is:
- * postgresql://username:password@host:port/database
- */
+// Determine SSL usage based on environment variables and DB URL
 const dbUrl = process.env.DB_URL;
 const isLocalDb = dbUrl
     ? /@(localhost|127\.0\.0\.1)(:\d+)?\//i.test(dbUrl)
@@ -40,6 +31,7 @@ if (!dbUrl) {
     throw new Error("DB_URL is not defined in environment variables");
 }
 
+// Create a new PostgreSQL connection pool with SSL configuration
 const pool = new Pool({ 
     connectionString: dbUrl, 
     ssl: useSSL 
@@ -53,22 +45,13 @@ const pool = new Pool({
 console.log("USE_SSL:", process.env.USE_SSL);
 console.log("SSL Enabled:", useSSL);
 
-/**
- * Since we will modify the normal pool object in development mode, we need to create and
- * export a reference to the pool object. This allows us to use the same name for the
- * export regardless of whether we are in development or production mode.
- */
+// Export a query function that logs queries in development mode
 let db = null;
 
 if (process.env.NODE_ENV?.includes('dev') && process.env.ENABLE_SQL_LOGGING === 'true') {
     console.log("SQL Logging Enabled");
-    /**
-     * In development mode, we wrap the pool to provide query logging.
-     * This helps with debugging by showing all executed queries in the console.
-     *
-     * The wrapper also adds timing information to help identify slow queries
-     * and tracks the number of rows affected by each query.
-     */
+    
+    // In development with logging enabled, wrap the pool's query method to log queries
     db = {
         async query(text, params) {
             try {

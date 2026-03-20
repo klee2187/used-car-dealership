@@ -6,22 +6,18 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-/**
- * Sets up the database by running the seed.sql file if needed.
- */
+// This file contains functions to set up the database, including seeding initial data and testing the connection.
 const setupDatabase = async () => {
     
     let hasData = false;
     try {
         const result = await db.query(
-            "SELECT EXISTS (SELECT 1 FROM faculty LIMIT 1) as has_data"
+            "SELECT EXISTS (SELECT 1 FROM vehicles LIMIT 1) as has_data"
         );
         hasData = result.rows[0]?.has_data || false;
     } catch (error) {
-        /**
-         * If query fails (e.g., table doesn't exist), treat the same as no data.
-         * This allows the seed process to proceed.
-         */
+        
+        // If the error is due to the vehicles table not existing, we can ignore it and proceed to seed the database
         hasData = false;
     }
     
@@ -47,9 +43,8 @@ const setupDatabase = async () => {
     return true;
 };
 
-/**
- * Tests the database connection by executing a simple query.
- */
+
+// Simple function to test database connection
 const testConnection = async () => {
     const result = await db.query('SELECT NOW() as current_time');
     console.log('Database connection successful:', result.rows[0].current_time);

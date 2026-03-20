@@ -1,0 +1,128 @@
+import { Router } from 'express';
+import { body, validationResult } from 'express-validator';
+import bcrypt from 'bcrypt';
+import { emailExists, saveUser, getAllUsers } from '../../models/forms/registration.js';
+
+const router = Router();
+
+// Validation rules for registration form
+const registrationValidation = [
+    body('name')
+        .trim()
+        .isLength({ min: 2, max: 100 })
+        .withMessage('Name must be between 2 and 100 characters')
+        .matches(/^[a-zA-Z\s'-]+$/)
+        .withMessage('Names can only contain letters, spaces, hyphens, and apostrophes'),
+    body('email')
+        .trim()
+        .isEmail()
+        .normalizeEmail()
+        .withMessage('Must be a valid email address')
+        .isLength({ max: 255 })
+        .withMessage('Email is too long'),
+    body('emailConfirm')
+        .trim()
+        .custom((value, { req }) => value === req.body.email)
+        .withMessage('Email addresses must match'),
+    body('password')
+        .isLength({ min: 8, max: 128 })
+        .withMessage('Password must be between 8 and 128')
+        .matches(/[0-9]/)
+        .withMessage('Password must contain at least 1 number')
+        .matches(/[a-z]/)
+        .withMessage('Password must contain at least one lowercase letter')
+        .matches(/[!@#$%^&*]/)
+        .withMessage('Password must contain at least one special character')
+        .matches(/[A-Z]/)
+        .withMessage('Password must contain at least one uppercase letter')
+        .matches(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)
+        .withMessage('Must contain at least one special character'),
+    body('passwordConfirm')
+        .custom((value, { req }) => value === req.body.password)
+        .withMessage('Passwords must match'),
+];
+
+// Display the registration form page
+const showRegistrationForm = (req, res) => {
+    res.render('forms/registration/form', {
+        title: 'User Registration'
+    })
+
+};
+
+// Handle registration form submission with validation
+const processRegistration = async (req, res) => {
+    // Check for validation errors
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        // Store each validation error as a separate flash message
+        errors.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
+        return res.redirect('/register');
+    }
+
+    // Extract validated data from request body
+    const { name, email, password } = req.body;
+
+    try {
+        // Check if email already exists in database
+        const exists = await emailExists(email);
+
+        if (exists === true) {
+            req.flash('warning', 'This email is already tied to an account');
+            return res.redirect('/register')
+        }
+
+        // Hash the password before saving to database
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+
+        // Save user to database with hashed password
+        await saveUser(name, email, hashedPassword);
+
+        // After successfully saving to the database
+        req.flash('success', 'Registration successful! Thank you for creating an account with us!');
+        req.session.save(() => {
+            res.redirect('/login');
+        })
+        
+    } catch (error) {
+        console.error('Error saving registration form:', error);
+        req.flash('error', 'Registrstion failed, please try again another time.');
+        res.redirect('/register');
+    }
+};
+
+// Admin route to view all registered users
+const showAllUsers = async (req, res) => {
+    // Initialize users as empty array
+    let users = [];
+
+    try {
+        // Call getAllUsers() and assign to users variable
+        users = await getAllUsers();
+    } catch (error) {
+        console.log('Error retrieving users:', error);
+        // users remains empty array on error
+    }
+
+    res.render('forms/registration/list', {
+        // Pass title: 'Registered Users' and the users variable in the data object
+        title: 'Registered Users',
+        users
+    })
+    
+};
+
+// Define routes for registration form
+router.get('/', showRegistrationForm);
+
+// POST /register - Handle form submission with validation
+router.post('/', registrationValidation, processRegistration);
+
+// Admin route to view all registered users
+router.get('/list', showAllUsers);
+
+export default router;
