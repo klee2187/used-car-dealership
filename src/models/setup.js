@@ -24,7 +24,6 @@ const setupDatabase = async () => {
     if (hasData) {
         console.log('Database already seeded');
     } else {
-        
         console.log('Seeding database...');
         const seedPath = join(__dirname, 'sql', 'seed.sql');
         const seedSQL = fs.readFileSync(seedPath, 'utf8');

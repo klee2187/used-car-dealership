@@ -5,16 +5,17 @@
 BEGIN;
 
 -- Drop existing tables (in reverse dependency order)
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS categories CASCADE;
-DROP TABLE IF EXISTS vehicles CASCADE;
-DROP TABLE IF EXISTS vehicle_images CASCADE;
-DROP TABLE IF EXISTS reviews CASCADE;
-DROP TABLE IF EXISTS srvice_requests CASCADE;
 DROP TABLE IF EXISTS contact_messages CASCADE;
+DROP TABLE IF EXISTS service_requests CASCADE;
+DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS vehicle_images CASCADE;
+DROP TABLE IF EXISTS vehicles CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
 
 --Create users table
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     user_id SERIAL PRIMARY KEY,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
@@ -25,15 +26,16 @@ CREATE TABLE users (
 );
 
 -- Create categories table
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
     description TEXT,
+    slug VARCHAR(150) UNIQUE NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create vehicles table
-CREATE TABLE vehicles (
+CREATE TABLE IF NOT EXISTS vehicles (
     vehicle_id SERIAL PRIMARY KEY,
     category_id INT REFERENCES categories(category_id) ON DELETE SET NULL,
     make VARCHAR(100) NOT NULL,
@@ -47,7 +49,7 @@ CREATE TABLE vehicles (
 );
 
 -- Create vehicle_images table
-CREATE TABLE vehicle_images (
+CREATE TABLE IF NOT EXISTS vehicle_images (
     image_id SERIAL PRIMARY KEY,
     vehicle_id INT NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
     image_url TEXT NOT NULL,
@@ -57,7 +59,7 @@ CREATE TABLE vehicle_images (
 
 
 -- Create reviews table
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
     review_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     vehicle_id INT NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
@@ -67,7 +69,7 @@ CREATE TABLE reviews (
 );
 
 --Create service_requests table
-CREATE TABLE service_requests (
+CREATE TABLE IF NOT EXISTS service_requests (
     request_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     vehicle_id INT REFERENCES vehicles(vehicle_id) ON DELETE SET NULL,
@@ -79,7 +81,7 @@ CREATE TABLE service_requests (
 );
 
 --Create contact_messages table
-CREATE TABLE contact_messages (
+CREATE TABLE IF NOT EXISTS contact_messages (
     message_id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(user_id) ON DELETE SET NULL,
     name VARCHAR(150) NOT NULL,
@@ -102,7 +104,8 @@ VALUES
   ('Brianna', 'Clutch', 'brianna.clutch@example.com', '$2b$10$mm22nn33oo44pp55qq66rr77ss88tt99uu00vv11ww22xx33yy', 'customer'),
   ('Trevor', 'Gearson', 'trevor.gearson@example.com', '$2b$10$zz11yy22xx33ww44vv55uu66tt77ss88rr99qq00pp11oo22nn', 'employee'),
   ('Megan', 'Axle', 'megan.axle@example.com', '$2b$10$ff44ee55dd66cc77bb88aa99zz00yy11xx22ww33vv44uu55tt', 'customer'),
-  ('Admin', 'Master', 'admin@example.com', '$2b$10$adminadminadminadminadminadminadminadminadminadmi', 'owner');
+  ('Admin', 'Master', 'admin@example.com', '$2b$10$adminadminadminadminadminadminadminadminadminadmi', 'owner')
+  ON CONFLICT (email) DO NOTHING;
 
 
 -- Insert categories
@@ -115,7 +118,8 @@ VALUES
   ('Convertible', 'Cars with retractable roofs'),
   ('Minivan', 'Family‑oriented vans with seating for 7–8'),
   ('Electric', 'Fully electric vehicles with zero emissions'),
-  ('Hybrid', 'Fuel‑efficient hybrid gasoline/electric vehicles');
+  ('Hybrid', 'Fuel‑efficient hybrid gasoline/electric vehicles')
+  ON CONFLICT (name) DO NOTHING;
 
 
 -- Insert vehicles

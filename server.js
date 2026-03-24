@@ -39,6 +39,10 @@ app.get("/vehicles/:id", (req, res) => {
         res.render("vehicles/detail", { title: `${vehicle.year} ${vehicle.make} ${vehicle.model}`, vehicle });
 });
 
+app.get("/", (req, res) => {
+    res.render("home", { title: "Home" });
+});
+
 app.listen(PORT, async () => {
     await setupDatabase();
     await testConnection();
