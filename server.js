@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 // import MVC components
+import router from './src/controllers/routes.js';
 import { setupDatabase, testConnection } from './src/models/setup.js';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
@@ -19,6 +20,8 @@ const PORT = process.env.PORT || 3000;
 
 // Create Express app
 const app = express();
+
+
 
 // Static files
 app.set("view engine", "ejs");
@@ -53,6 +56,9 @@ app.use(session({
 app.get("/", (req, res) => {
     res.render("home", { title: "Home" });
 });
+
+// Use the imported router for all routes
+app.use("/", router);
 
 // Test that sessions work
 app.get("/test-session", (req, res) => {
