@@ -37,6 +37,54 @@ export const getCategoryByIdentifier = async (identifier, identifierType = 'slug
         throw error;
     }
 
-    //Wrapper function to get category by id
-export const getCategoryById = async (id) => 
-    getCategoryByIdentifier(id, 'slug', 'id'); 
+}
+
+// Function to add a new category
+export const addCategory = async (name, description) => {
+    try {
+        const slug = name.toLowerCase().replace(/\s+/g, '-'); // Simple slug generation
+        const result = await db.query(`
+            INSERT INTO categories (name, description, slug)
+            VALUES ($1, $2, $3) RETURNING *
+        `, [name, description, slug]);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error adding category:', error);
+        throw error;
+    }
+}
+
+// Function to update an existing category
+export const updateCategory = async (id, name, description) => {
+    try {
+        const slug = name.toLowerCase().replace(/\s+/g, '-'); // Update slug if name changes
+        const result = await db.query(`
+            UPDATE categories
+            SET name = $1, description = $2, slug = $3
+            WHERE id = $4 RETURNING *
+        `, [name, description, slug, id]);
+        return result.rows[0];
+    }
+    catch (error) {
+        console.error('Error updating category:', error);
+        throw error;
+    }
+}
+
+// Function to delete a category by ID
+export const deleteCategory = async (id) => {
+    try {
+        const result = await db.query(`
+            DELETE FROM categories
+            WHERE id = $1 RETURNING *
+        `, [id]);
+        return result.rows[0];
+    } catch (error) {
+        console.error('Error deleting category:', error);
+        throw error;
+    }
+}  
+
+// Wrapper function to get category by slug
+export const getCategoryBySlug = async (slug) => 
+    getCategoryByIdentifier(slug, 'slug');
