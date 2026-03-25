@@ -29,10 +29,11 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS categories (
     category_id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL,
-    description TEXT,
     slug VARCHAR(150) UNIQUE NOT NULL,
+    description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 -- Create vehicles table
 CREATE TABLE IF NOT EXISTS vehicles (
@@ -41,6 +42,7 @@ CREATE TABLE IF NOT EXISTS vehicles (
     make VARCHAR(100) NOT NULL,
     model VARCHAR(100) NOT NULL,
     year INT NOT NULL,
+    slug VARCHAR(200) UNIQUE NOT NULL,
     price NUMERIC(10, 2) NOT NULL,
     mileage INT NOT NULL,
     description TEXT,
@@ -109,30 +111,32 @@ VALUES
 
 
 -- Insert categories
-INSERT INTO categories (name, description)
+INSERT INTO categories (name, slug, description)
 VALUES
-  ('Sedan', 'Comfortable four‑door passenger cars'),
-  ('SUV', 'Sport utility vehicles with extra space and capability'),
-  ('Truck', 'Pickup trucks for hauling and towing'),
-  ('Coupe', 'Two‑door sporty vehicles'),
-  ('Convertible', 'Cars with retractable roofs'),
-  ('Minivan', 'Family‑oriented vans with seating for 7–8'),
-  ('Electric', 'Fully electric vehicles with zero emissions'),
-  ('Hybrid', 'Fuel‑efficient hybrid gasoline/electric vehicles')
-  ON CONFLICT (name) DO NOTHING;
+  ('Sedan', 'sedan', 'Comfortable four‑door passenger cars'),
+  ('SUV', 'suv', 'Sport utility vehicles with extra space and capability'),
+  ('Truck', 'truck', 'Pickup trucks for hauling and towing'),
+  ('Coupe', 'coupe', 'Two‑door sporty vehicles'),
+  ('Convertible', 'convertible', 'Cars with retractable roofs'),
+  ('Minivan', 'minivan', 'Family‑oriented vans with seating for 7–8'),
+  ('Electric', 'electric', 'Fully electric vehicles with zero emissions'),
+  ('Hybrid', 'hybrid', 'Fuel‑efficient hybrid gasoline/electric vehicles')
+ON CONFLICT (name) DO NOTHING;
+
 
 
 -- Insert vehicles
-INSERT INTO vehicles (category_id, make, model, year, price, mileage, description)
+INSERT INTO vehicles (category_id, make, model, year, slug, price, mileage, description)
 VALUES
-  (1, 'Toyota', 'Corolla', 2004, 2999.00, 187000, 'Makes a mysterious whistling noise at 45 mph. Still runs. Probably.'),
-  (2, 'Jeep', 'Wrangler', 1999, 4999.00, 210000, 'Roof leaks only when it rains. Which is unfortunate.'),
-  (3, 'Ford', 'F‑150', 2001, 3500.00, 240000, 'Starts every time if you talk nicely to it.'),
-  (4, 'Dodge', 'Charger', 2010, 8999.00, 160000, 'Has “character.” Lots of it.'),
-  (5, 'BMW', 'Z4', 2005, 6999.00, 155000, 'Convertible top works… when it feels like it.'),
-  (6, 'Chrysler', 'Town & Country', 2008, 2500.00, 198000, 'Smells faintly like crayons. No one knows why.'),
-  (7, 'Nissan', 'Leaf', 2013, 4999.00, 82000, 'Battery range: “Yes.”'),
-  (8, 'Toyota', 'Prius', 2007, 3200.00, 220000, 'Hybrid system occasionally screams like a banshee. Still efficient.');
+  (1, 'Toyota', 'Corolla', 2004, 'toyota-corolla-2004', 2999.00, 187000, 'Makes a mysterious whistling noise at 45 mph. Still runs. Probably.'),
+  (2, 'Jeep', 'Wrangler', 1999, 'jeep-wrangler-1999', 4999.00, 210000, 'Roof leaks only when it rains. Which is unfortunate.'),
+  (3, 'Ford', 'F‑150', 2001, 'ford-f150-2001', 3500.00, 240000, 'Starts every time if you talk nicely to it.'),
+  (4, 'Dodge', 'Charger', 2010, 'dodge-charger-2010', 8999.00, 160000, 'Has “character.” Lots of it.'),
+  (5, 'BMW', 'Z4', 2005, 'bmw-z4-2005', 6999.00, 155000, 'Convertible top works… when it feels like it.'),
+  (6, 'Chrysler', 'Town & Country', 2008, 'chrysler-town-and-country-2008', 2500.00, 198000, 'Smells faintly like crayons. No one knows why.'),
+  (7, 'Nissan', 'Leaf', 2013, 'nissan-leaf-2013', 4999.00, 82000, 'Battery range: “Yes.”'),
+  (8, 'Toyota', 'Prius', 2007, 'toyota-prius-2007', 3200.00, 220000, 'Hybrid system occasionally screams like a banshee. Still efficient.');
+
 
 
 -- Insert vehicle images
@@ -184,6 +188,11 @@ VALUES
   (4, 'Linda Torque', 'linda.torque@example.com', 'Charger Vibration', 'The Charger shakes when accelerating. Is this normal “character” or should I bring it in?'),
   (NULL, 'Becky Curious', 'becky.curious@example.com', 'Crayon Smell Concern', 'I test drove the Town & Country and it smelled like crayons. Is that a feature or a mystery?'),
   (5, 'Carla Keys', 'carla.keys@example.com', 'Website Feedback', 'Love the new dealership site. One suggestion: add a “Does this car scream?” filter. Very useful.');
+
+
+
+
+
 
 
 COMMIT;
