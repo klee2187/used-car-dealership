@@ -1,5 +1,6 @@
 import { body, validationResult } from 'express-validator';
 import { findUserByEmail, verifyPassword } from '../../models/forms/login.js';
+import bcrypt from 'bcrypt';
 import { Router } from 'express';
 
 const router = Router();

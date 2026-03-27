@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
-import { createContactForm, getAllContactForms } from '../../models/forms/contact.js';
+import { newContactMessage, getAllContactForms } from '../../models/forms/contact.js';
 
 const router = Router();
 
@@ -31,7 +31,7 @@ const handleContactSubmission = async (req, res) => {
     try {
         // Save to database
         const { subject, message } = req.body;
-        await createContactForm(subject, message);
+        await newContactMessage(subject, message);
         req.flash('success', 'Thank you for contacting us! We will respond soon.');
         res.redirect('/contact');
 
