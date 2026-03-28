@@ -1,1 +1,17 @@
-<h1></h1>
+<% include ../partials/header %>
+
+<h1>Login to Your Account</h1>
+
+<form action="/login" method="POST" class="form">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="password" class="form-label">Password</label>
+    <input type="password" name="password" id="password" required>
+
+    <button type="submit">Login</button>
+</form>
+
+<p>Don't have an account? <a href="/register">Register here</a>.</p>
+
+<% include ../partials/footer %>

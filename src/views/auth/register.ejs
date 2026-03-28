@@ -1,16 +1,28 @@
+<% include ../partials/header %>
+
 <h1>Register for an Account</h1>
 
 <form action="/register" method="POST">
     
-    <label>Name</label>
-    <input type="text" name="name" required>
+    <label for="name" class="form-label">Full Name</label>
+    <input type="text" name="name" id="name" required>
 
-    <label>Email</label>
-    <input type="email" name="email" required>
+    <label for="email" class="form-label">Email</label>
+    <input type="email" name="email" id="email" required>
 
-    <label>Password</label>
-    <input type="password" name="password" required>
+    <label for="emailConfirm" class="form-label">Confirm Email</label>
+    <input type="email" name="emailConfirm" id="emailConfirm" required>
+
+    <label for="password" class="form-label">Password</label>
+    <input type="password" name="password" id="password" required>
+
+    <label for="passwordConfirm" class="form-label">Confirm Password</label>
+    <input type="password" name="passwordConfirm" id="passwordConfirm" required>
 
     <button type="submit">Create Account</button>
 
 </form>
+
+<p>Already have an account? <a href="/login">Login here</a>.</p>
+
+<% include ../partials/footer %>
