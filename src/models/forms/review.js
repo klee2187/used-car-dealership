@@ -4,7 +4,7 @@ import db from "./db.js";
 export const getVehicleReviews = async (vehicleId) => {
     try {
         const result = await db.query(
-            `SELECT r.review_id, r.rating, r.comment, r.created_at,
+            `SELECT r.review_id, u.username, r.rating, r.comment, r.created_at,
                 u.user_id, u.name
             FROM reviews r
             JOIN users u ON r.user_id = u.user_id

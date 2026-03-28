@@ -95,18 +95,18 @@ CREATE TABLE IF NOT EXISTS contact_messages (
 
 
 -- Insert users
-INSERT INTO users (first_name, last_name, email, password_hash, role)
+INSERT INTO users (first_name, last_name, email, username, password_hash, role)
 VALUES
-  ('John', 'Driver', 'john.driver@example.com', '$2b$10$abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef', 'customer'),
-  ('Sarah', 'Wheeler', 'sarah.wheeler@example.com', '$2b$10$12345123451234512345123451234512345123451234512345', 'customer'),
-  ('Mike', 'Shift', 'mike.shift@example.com', '$2b$10$qwertyqwertyqwertyqwertyqwertyqwertyqwertyqwerty', 'employee'),
-  ('Linda', 'Torque', 'linda.torque@example.com', '$2b$10$zxcvbzxcvbzxcvbzxcvbzxcvbzxcvbzxcvbzxcvbzxcvb', 'employee'),
-  ('Carla', 'Keys', 'carla.keys@example.com', '$2b$10$98765987659876598765987659876598765987659876598765', 'customer'),
-  ('Alex', 'Roadman', 'alex.roadman@example.com', '$2b$10$aa11bb22cc33dd44ee55ff66gg77hh88ii99jj00kk11ll22mm', 'customer'),
-  ('Brianna', 'Clutch', 'brianna.clutch@example.com', '$2b$10$mm22nn33oo44pp55qq66rr77ss88tt99uu00vv11ww22xx33yy', 'customer'),
-  ('Trevor', 'Gearson', 'trevor.gearson@example.com', '$2b$10$zz11yy22xx33ww44vv55uu66tt77ss88rr99qq00pp11oo22nn', 'employee'),
-  ('Megan', 'Axle', 'megan.axle@example.com', '$2b$10$ff44ee55dd66cc77bb88aa99zz00yy11xx22ww33vv44uu55tt', 'customer'),
-  ('Admin', 'Master', 'admin@example.com', '$2b$10$adminadminadminadminadminadminadminadminadminadmi', 'owner')
+  ('John', 'Driver', 'john.driver@example.com', 'johndriver', '$2b$10$abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef', 'customer'),
+  ('Sarah', 'Wheeler', 'sarah.wheeler@example.com', 'sarahwheeler', '$2b$10$12345123451234512345123451234512345123451234512345', 'customer'),
+  ('Mike', 'Shift', 'mike.shift@example.com', 'mikeshift', '$2b$10$qwertyqwertyqwertyqwertyqwertyqwertyqwertyqwerty', 'employee'),
+  ('Linda', 'Torque', 'linda.torque@example.com', 'lindatorque', '$2b$10$zxcvbzxcvbzxcvbzxcvbzxcvbzxcvbzxcvbzxcvbzxcvb', 'employee'),
+  ('Carla', 'Keys', 'carla.keys@example.com', 'carkeys', '$2b$10$98765987659876598765987659876598765987659876598765', 'customer'),
+  ('Alex', 'Roadman', 'alex.roadman@example.com', 'alexroadman', '$2b$10$aa11bb22cc33dd44ee55ff66gg77hh88ii99jj00kk11ll22mm', 'customer'),
+  ('Brianna', 'Clutch', 'brianna.clutch@example.com', 'briannaclutch', '$2b$10$mm22nn33oo44pp55qq66rr77ss88tt99uu00vv11ww22xx33yy', 'customer'),
+  ('Trevor', 'Gearson', 'trevor.gearson@example.com', 'trevorgearson', '$2b$10$zz11yy22xx33ww44vv55uu66tt77ss88rr99qq00pp11oo22nn', 'employee'),
+  ('Megan', 'Axle', 'megan.axle@example.com', 'meganaxle', '$2b$10$ff44ee55dd66cc77bb88aa99zz00yy11xx22ww33vv44uu55tt', 'customer'),
+  ('Admin', 'Master', 'admin@example.com', 'admin', '$2b$10$adminadminadminadminadminadminadminadminadminadmi', 'owner')
   ON CONFLICT (email) DO NOTHING;
 
 

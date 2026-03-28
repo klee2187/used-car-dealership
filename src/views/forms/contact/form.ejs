@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+
+<h1>Contact Us</h1>
+
+<form action="/contact" method="POST" class="form">
+
+    <label for name="name" class="form-label" required>Your Name</label>
+    <input type="text" name="name" id="name" required>
+
+    <label for name="email" class="form-label" required>Your Email</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="subject" class="form-label">Subject</label>
+    <input type="text" name="subject" id="subject" required>
+
+    <label for="message" class="form-label">Message</label>
+    <textarea name="message" id="message" rows="5" required></textarea>
+
+    <button type="submit">Send Message</button>
+
+</form>
+
+<%- include('partials/footer') %>
