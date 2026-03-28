@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'customer', -- customer | employee | owner
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    
 );
 
 -- Create categories table
@@ -32,6 +33,7 @@ CREATE TABLE IF NOT EXISTS categories (
     slug VARCHAR(150) UNIQUE NOT NULL,
     description TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    
 );
 
 
@@ -48,6 +50,7 @@ CREATE TABLE IF NOT EXISTS vehicles (
     description TEXT,
     is_available BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    FOREIGN KEY (category_id) REFERENCES categories(category_id;
 );
 
 -- Create vehicle_images table
@@ -56,7 +59,8 @@ CREATE TABLE IF NOT EXISTS vehicle_images (
     vehicle_id INT NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
     image_url TEXT NOT NULL,
     alt_text VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)
 );
 
 
@@ -67,7 +71,9 @@ CREATE TABLE IF NOT EXISTS reviews (
     vehicle_id INT NOT NULL REFERENCES vehicles(vehicle_id) ON DELETE CASCADE,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     comment TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)
 );
 
 --Create service_requests table
@@ -79,7 +85,10 @@ CREATE TABLE IF NOT EXISTS service_requests (
     description TEXT NOT NULL,
     internal_notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id)
+
 );
 
 --Create contact_messages table
@@ -90,7 +99,8 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     email VARCHAR(255) NOT NULL,
     subject VARCHAR(255),
     message TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 

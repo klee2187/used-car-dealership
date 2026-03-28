@@ -59,10 +59,10 @@ const showContactResponses = async (req, res) => {
 };
 
 // Define routes for contact form
-router.get('/', showContactForm);
+router.get('/contact/form', showContactForm);
 
 // POST /contact - Handle form submission with validation
-router.post('/',
+router.post('/contact',
     [
         body('subject')
             .trim()
