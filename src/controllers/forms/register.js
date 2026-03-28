@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { body, validationResult } from "express-validator";
-import { createUser, findUserByEmail} from "../../models/user/User.js";
+import { createUser, getUserByEmail} from "../../models/user/User.js";
 import bcrypt from "bcrypt";
 
 const router = Router();
@@ -46,7 +46,7 @@ export const registerUser = async (req, res) => {
     
     const { name, email, password } = req.body;
     try {
-        const existing = await findUserByEmail(email);
+        const existing = await getUserByEmail(email);
         if (existing) {
             return res.render("auth/register", { error: "Email already registered" });
         }
