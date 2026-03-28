@@ -13,12 +13,13 @@
   "license": "ISC",
   "packageManager": "pnpm@10.28.0",
   "dependencies": {
-    "connect-pg-simple": "^10.0.0",
     "bcrypt": "^6.0.0",
+    "connect-pg-simple": "^10.0.0",
     "dotenv": "^17.3.1",
     "ejs": "^5.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "express-validator": "^7.3.1",
     "method-override": "^3.0.0",
     "pg": "^8.20.0"
   },
