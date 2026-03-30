@@ -14,7 +14,7 @@ const reviewValidation = [
         .trim()
         .isLength({ min: 10 })
         .notEmpty()
-        .withMessage("Don"t be shy! Please provide a comment of at least 10 characters."),
+        .withMessage("Don't be shy! Please provide a comment of at least 10 characters."),
     body("name_option")
         .optional()
         .trim()
@@ -42,7 +42,7 @@ export const createReview = async (req, res) => {
     const { slug } = req.params;
 
     if (!errors.isEmpty()) {
-        req.flash("error", "You"ve got some fixing to do. Please correct the errors and try again.");
+        req.flash("error", "You've got some fixing to do. Please correct the errors and try again.");
         return res.redirect(`/vehicles/${slug}`);
     }
 
@@ -77,7 +77,7 @@ export const createReview = async (req, res) => {
 
     } catch (error) {
         console.error("Error creating review:", error);
-        req.flash("error", "Oops! Something went wrong. I guess you"ll have to come back later.");
+        req.flash("error", "Oops! Something went wrong. I guess you'll have to come back later.");
         return res.redirect(`/vehicles/${slug}`);
     }
 }
