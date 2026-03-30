@@ -18,10 +18,10 @@ const flashMiddleware = (req, res, next) => {
 
     // Flash function to set or get flash messages
     req.flash = function(type, message) {
-        // Guard: If session doesn't exist (e.g., after session.destroy()), 
+        // Guard: If session doesn"t exist (e.g., after session.destroy()), 
         // return early to prevent errors. Flash messages require a session to store.
         if (!req.session) {
-            // If setting a message (both type and message provided), can't do without session
+            // If setting a message (both type and message provided), can"t do without session
             if (type && message) {
                 return; // Silently fail - no session to store in
             }
@@ -29,7 +29,7 @@ const flashMiddleware = (req, res, next) => {
             return { success: [], error: [], warning: [], info: [] };
         }
 
-        // Initialize flash storage if it doesn't exist
+        // Initialize flash storage if it doesn"t exist
         if (!req.session.flash) {
             req.session.flash = {
                 success: [],
@@ -39,9 +39,9 @@ const flashMiddleware = (req, res, next) => {
             };
         }
 
-        // SETTING: Two arguments means we're storing a new message
+        // SETTING: Two arguments means we"re storing a new message
         if (type && message) {
-            // Ensure this message type's array exists
+            // Ensure this message type"s array exists
             if (!req.session.flash[type]) {
                 req.session.flash[type] = [];
             }
@@ -55,7 +55,7 @@ const flashMiddleware = (req, res, next) => {
         // GETTING ONE TYPE: One argument means retrieve messages of that type
         if (type && !message) {
             const messages = req.session.flash[type] || [];
-            // Clear this type's messages after retrieving
+            // Clear this type"s messages after retrieving
             req.session.flash[type] = [];
             return messages;
         }

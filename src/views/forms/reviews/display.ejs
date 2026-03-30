@@ -1,0 +1,50 @@
+<%-include ("/partials/head")%>
+<%- include("/partials/header") %>
+
+<div class="reviews-container">
+    
+    <h1>Customer Reviews</h1>
+
+    <% if (reviews && reviews.length > 0) { %>
+        <p class="no-reviews">There are no reviews yet, but you can be the lucky one to leave one first.</p>
+    <% } %>
+
+    <% reviews.forEach(review => { %>
+        <div class="reviews-card">
+            <!-- Star Rating -->
+             <div class="review-stars">
+                <% for (let i = 1; i <= 5; i++) { %>
+                    <% if (i <= review.rating) { %>
+                        <span class="star filled">&#9733;</span>
+                    <% } else { %>
+                        <span class="star">&#9733;</span>
+                    <% } %>
+                <% } %>
+             </div>
+
+             <!-- Reviewer Name -->
+              <p class="reviewer">
+                <strong><%= review.reviewer_name %></strong> 
+              </p>
+
+              <!-- Timestamp -->
+              <p class="review-date">
+                  <%= new Date(review.created_at).toLocaleDateString() %>
+              </p>
+
+              <!-- Comment -->
+              <p class="review-comment">
+                  <%= review.comment %>
+              </p>
+
+        </div>
+    <% }) %>
+
+    <!-- Leave a Review Button -->
+     <div class="leave-review">
+        <a href="/reviews/<%= vehicle.vehicle_id %>/new" class="btn">
+            Leave a Review
+        </a>
+     </div>
+     
+</div>

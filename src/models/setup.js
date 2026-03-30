@@ -1,7 +1,7 @@
-import db from './db.js';
-import fs from 'fs';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import db from "./db.js";
+import fs from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,21 +22,21 @@ const setupDatabase = async () => {
     }
     
     if (hasData) {
-        console.log('Database already seeded');
+        console.log("Database already seeded");
     } else {
-        console.log('Seeding database...');
-        const seedPath = join(__dirname, 'sql', 'seed.sql');
-        const seedSQL = fs.readFileSync(seedPath, 'utf8');
+        console.log("Seeding database...");
+        const seedPath = join(__dirname, "sql", "seed.sql");
+        const seedSQL = fs.readFileSync(seedPath, "utf8");
         await db.query(seedSQL);
-        console.log('Database seeded successfully');
+        console.log("Database seeded successfully");
     }
 
     // Always run practice.sql if it exists
-    const practicePath = join(__dirname, 'sql', 'practice.sql');
+    const practicePath = join(__dirname, "sql", "practice.sql");
     if (fs.existsSync(practicePath)) {
-        const practiceSQL = fs.readFileSync(practicePath, 'utf8');
+        const practiceSQL = fs.readFileSync(practicePath, "utf8");
         await db.query(practiceSQL);
-        console.log('Practice database tables initialized');
+        console.log("Practice database tables initialized");
     }
     
     return true;
@@ -45,8 +45,8 @@ const setupDatabase = async () => {
 
 // Simple function to test database connection
 const testConnection = async () => {
-    const result = await db.query('SELECT NOW() as current_time');
-    console.log('Database connection successful:', result.rows[0].current_time);
+    const result = await db.query("SELECT NOW() as current_time");
+    console.log("Database connection successful:", result.rows[0].current_time);
     return true;
 };
 

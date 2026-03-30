@@ -1,7 +1,7 @@
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import readline from 'readline';
-import os from 'os';
+import { exec } from "child_process";
+import { promisify } from "util";
+import readline from "readline";
+import os from "os";
 
 const execAsync = promisify(exec);
 
@@ -17,7 +17,7 @@ class PortKiller {
             win32: {
                 check: (port) => { return `netstat -ano | findstr :${port}`; },
                 getPid: (output) => {
-                    const lines = output.split('\n');
+                    const lines = output.split("\n");
                     for (const line of lines) {
                         const parts = line.trim().split(/\s+/);
                         if (parts.length > 4) {
@@ -36,7 +36,7 @@ class PortKiller {
                 processInfo: (pid) => { return `ps -p ${pid} -o comm=`; }
             },
             linux: {
-                check: (port) => { return `ss -lptn 'sport = :${port}'`; },
+                check: (port) => { return `ss -lptn "sport = :${port}"`; },
                 getPid: (output) => {
                     const match = output.match(/pid=(\d+)/);
                     return match ? match[1] : null;
@@ -72,7 +72,7 @@ class PortKiller {
             const { stdout } = await execAsync(this.commands.processInfo(pid));
             return stdout.trim();
         } catch (error) {
-            return 'Unknown Process';
+            return "Unknown Process";
         }
     }
 
@@ -92,7 +92,7 @@ async function main() {
     const ports = process.argv.slice(2).map(Number).filter(Boolean);
 
     if (ports.length === 0) {
-        console.error('Usage: node script.js <port1> <port2> ...');
+        console.error("Usage: node script.js <port1> <port2> ...");
         process.exit(1);
     }
 
@@ -118,9 +118,9 @@ async function main() {
             const processName = await killer.getProcessInfo(process.pid);
             console.log(`Found process ${processName} (PID: ${process.pid}) using port ${port}`);
 
-            const answer = await question('Do you want to kill this process? (y/N): ');
+            const answer = await question("Do you want to kill this process? (y/N): ");
 
-            if (answer.toLowerCase() === 'y') {
+            if (answer.toLowerCase() === "y") {
                 const success = await killer.killProcess(process.pid);
                 if (success) {
                     console.log(`Successfully killed process on port ${port}`);

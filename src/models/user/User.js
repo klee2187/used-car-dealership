@@ -1,5 +1,5 @@
 // Imports
-import db from '../db.js';
+import db from "../db.js";
 
 // Get user by email
 export const getUserByEmail = async (email) => {
@@ -11,13 +11,13 @@ export const getUserByEmail = async (email) => {
             [email]);
         return result.rows[0] || null;
     } catch (error) {
-        console.error('Error, could not get user by email:', error);
+        console.error("Error, could not get user by email:", error);
         throw error;
     }
 }
 
 // Create new user (registration)
-export const createUser = async ({ name, email, password, role = 'customer'}) => {
+export const createUser = async ({ name, email, password, role = "customer"}) => {
     try {
         const result = await db.query(
             `INSERT INTO users (name, email, password, role)
@@ -26,23 +26,23 @@ export const createUser = async ({ name, email, password, role = 'customer'}) =>
             [name, email, password, role]);
         return result.rows[0];
     } catch (error) {
-        console.error('Error, could not create user:', error);
+        console.error("Error, could not create user:", error);
         throw error;
     }
 }
 
 // Get user by id (for sessions)
-export const getUserById = async ({ id }) => {
+export const getUserById = async ({ user_id }) => {
     try {
         const result = await db.query(
             `SELECT user_id, name, email, role
             FROM users
             WHERE user_id = $1`, 
-            [id]
+            [user_id]
         );
         return result.rows[0] || null;
     } catch (error) {
-        console.error('Error, could not get user by id:', error);
+        console.error("Error, could not get user by id:", error);
         throw error;
     }
 }

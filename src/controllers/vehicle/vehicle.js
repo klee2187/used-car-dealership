@@ -1,6 +1,6 @@
 // Imports
-import { getAllVehicles, getVehicleBySlug } from '../../models/vehicle/Vehicle.js';
-import { getCategoryById } from '../../models/category/Category.js';
+import { getAllVehicles, getVehicleBySlug } from "../../models/vehicle/Vehicle.js";
+import { getCategoryById } from "../../models/category/Category.js";
 
 
 // Show all vehicles

@@ -1,23 +1,28 @@
-<%- include('partials/header') %>
+<%- include("partials/head") {title: "Contact Us"} %>
+<%- include("partials/header") {title: "Contact Us"} %>
 
-<h1>Contact Us</h1>
+<div class="form-container">
+    <h1>Contact Us</h1>
 
-<form action="/contact" method="POST" class="form">
+    <% include("partials/flash") %>
 
-    <label for name="name" class="form-label" required>Your Name</label>
-    <input type="text" name="name" id="name" required>
+    <form action="/contact" method="POST" class="form">
 
-    <label for name="email" class="form-label" required>Your Email</label>
-    <input type="email" name="email" id="email" required>
+        <label for name="name" class="form-label" required>Your Name</label>
+        <input type="text" name="name" id="name" required>
 
-    <label for="subject" class="form-label">Subject</label>
-    <input type="text" name="subject" id="subject" required>
+        <label for name="email" class="form-label" required>Your Email</label>
+        <input type="email" name="email" id="email" required>
 
-    <label for="message" class="form-label">Message</label>
-    <textarea name="message" id="message" rows="5" required></textarea>
+        <label for="subject" class="form-label">Subject</label>
+        <input type="text" name="subject" id="subject" required>
 
-    <button type="submit">Send Message</button>
+        <label for="message" class="form-label">Message</label>
+        <textarea name="message" id="message" rows="5" required></textarea>
 
-</form>
+        <button type="submit">Send Message</button>
 
-<%- include('partials/footer') %>
+    </form>
+</div>
+
+<%- include("partials/footer") %>

@@ -1,5 +1,5 @@
-import bcrypt from 'bcrypt';
-import db from '../db.js';
+import bcrypt from "bcrypt";
+import db from "../db.js";
 
 // Find a user by email (for login)
 const findUserByEmail = async (email) => {

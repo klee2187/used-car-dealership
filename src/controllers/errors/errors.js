@@ -1,8 +1,8 @@
-const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
+const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 
 // 404 Not Found handler
 export const errorNotFound = (req, res, next) => {
-    const err = new Error('Page Not Found');
+    const err = new Error("Page Not Found");
     err.status = 404;
     next(err);
 };
@@ -22,16 +22,16 @@ export const globalErrorHandler = (err, req, res, next) => {
         Message: ${err.message}
         URL: ${req.originalUrl}
         Method: ${req.method}
-        User Agent: ${req.headers['user-agent']}
+        User Agent: ${req.headers["user-agent"]}
         Stack: ${err.stack}
             `);
 
-    const template = status === 404 ? '404' : '500';
+    const template = status === 404 ? "404" : "500";
 
     const context = {
-        title: status === 404 ? 'Page Not Found' : 'Server Error',
-        error: NODE_ENV === 'production' ? 'An error occurred' : err.message,
-        stack: NODE_ENV === 'production' ? null : err.stack,
+        title: status === 404 ? "Page Not Found" : "Server Error",
+        error: NODE_ENV === "production" ? "An error occurred" : err.message,
+        stack: NODE_ENV === "production" ? null : err.stack,
         NODE_ENV 
     };
 

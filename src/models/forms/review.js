@@ -15,7 +15,7 @@ export const getVehicleReviews = async (vehicleId) => {
         return result.rows;
 
     } catch (error) {
-        console.error('Error, could not get reviews for vehicle:', error);
+        console.error("Error, could not get reviews for vehicle:", error);
         throw error;
     }
 }
@@ -32,7 +32,7 @@ export const addVehicleReview = async ({ userId, vehicleId, rating, comment }) =
         return result.rows[0];
 
     } catch (error) {
-        console.error('Error, could not add review for vehicle:', error);
+        console.error("Error, could not add review for vehicle:", error);
         throw error;
     }
 }

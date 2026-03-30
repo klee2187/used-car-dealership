@@ -1,19 +1,24 @@
-<%- include('partials/header') %>
-<h1>Service Form</h1>
+<%- include("partials/head") {title: "Service Request"} %>
+<%- include("partials/header") {title: "Service Form"} %>
 
-<form action="/service-request/<%= vehicl.slug %>" method="POST" class="form">
+<div class="form-container">
+    <h1>Request Service for <%= vehicle.make %> <%= vehicle.model %></h1>
 
-    <label for="customerName" class="form-label">Customer Name</label>
-    <input type="text" name="customerName" id="customerName" required>
+    <% include("partials/flash") %>
 
-    <label for="customerEmail" class="form-label">Customer Email</label>
-    <input type="email" name="customerEmail" id="customerEmail" required>
-
-    <label for="description">Describe what ails your vehicle</label>
-    <textarea name="description" id="description" rows="4" required></textarea>
-
-    <button type="submit">Submit Service Request</button>
-
-</form>
-
-<% include ../partials/footer %>
+    <form action="/service-request/<%= vehicl.slug %>" method="POST" class="form">
+    
+        <label for="customerName" class="form-label">Customer Name</label>
+        <input type="text" name="customerName" id="customerName" required>
+    
+        <label for="customerEmail" class="form-label">Customer Email</label>
+        <input type="email" name="customerEmail" id="customerEmail" required>
+    
+        <label for="description">Describe what ails your vehicle</label>
+        <textarea name="description" id="description" rows="4" required></textarea>
+    
+        <button type="submit">Submit Service Request</button>
+    
+    </form>
+</div>
+<%- include("/partials/footer") %>

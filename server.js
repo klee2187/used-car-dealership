@@ -1,13 +1,13 @@
-import db, { caCert } from './src/models/db.js';
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import db, { caCert } from "./src/models/db.js";
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // import MVC components
-import router from './src/controllers/routes.js';
-import { setupDatabase, testConnection } from './src/models/setup.js';
-import session from 'express-session';
-import connectPgSimple from 'connect-pg-simple';
+import router from "./src/controllers/routes.js";
+import { setupDatabase, testConnection } from "./src/models/setup.js";
+import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
 
 
 
@@ -15,7 +15,7 @@ import connectPgSimple from 'connect-pg-simple';
 const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename);
 
-const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
+const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 const PORT = process.env.PORT || 3000;
 
 // Create Express app
@@ -38,16 +38,16 @@ const pgSession = connectPgSimple(session);
 app.use(session({
     store: new pgSession({
         pool: db,
-        tableName: 'session',
+        tableName: "session",
         createTableIfMissing: true
     }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: NODE_ENV === 'production', // Use secure cookies in production
+        secure: NODE_ENV === "production", // Use secure cookies in production
         httpOnly: true,
-        sameSite: NODE_ENV === 'production' ? 'none' : 'lax', // Use 'none' for production to allow cross-site cookies, 'lax' for development
+        sameSite: NODE_ENV === "production" ? "none" : "lax", // Use "none" for production to allow cross-site cookies, "lax" for development
         maxAge: 24 * 60 *60 * 1000 // 1 day
     }
 }));

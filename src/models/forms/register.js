@@ -1,4 +1,4 @@
-import db from '../db.js';
+import db from "../db.js";
 
 // Check if email already exists in the database
 const emailExists = async (email) => {

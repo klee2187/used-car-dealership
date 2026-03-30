@@ -1,28 +1,32 @@
-<%- include('partials/header') %>
+<%- include("partials/head") {title: "Sign Up"} %>
+<%- include("partials/header") {title: "Sign Up Here"} %>
 
-<h1>Register for an Account</h1>
+<div class="form-container">
+    <h1>Register for an Account</h1>
 
-<form action="/register" method="POST">
-    
-    <label for="name" class="form-label">Full Name</label>
-    <input type="text" name="name" id="name" required>
+    <% include("partials/flash") %>
 
-    <label for="email" class="form-label">Email</label>
-    <input type="email" name="email" id="email" required>
+    <form action="/register" method="POST">
 
-    <label for="emailConfirm" class="form-label">Confirm Email</label>
-    <input type="email" name="emailConfirm" id="emailConfirm" required>
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" name="name" id="name" required>
 
-    <label for="password" class="form-label">Password</label>
-    <input type="password" name="password" id="password" required>
+        <label for="email" class="form-label">Email</label>
+        <input type="email" name="email" id="email" required>
 
-    <label for="passwordConfirm" class="form-label">Confirm Password</label>
-    <input type="password" name="passwordConfirm" id="passwordConfirm" required>
+        <label for="emailConfirm" class="form-label">Confirm Email</label>
+        <input type="email" name="emailConfirm" id="emailConfirm" required>
 
-    <button type="submit">Create Account</button>
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" id="password" required>
 
-</form>
+        <label for="passwordConfirm" class="form-label">Confirm Password</label>
+        <input type="password" name="passwordConfirm" id="passwordConfirm" required>
 
-<p>Already have an account? <a href="/login">Login here</a>.</p>
+        <button type="submit">Create Account</button>
 
-<%- include('partials/footer') %>
+    </form>
+
+    <p>Already have an account? <a href="/login">Login here</a>.</p>
+</div>
+<%- include("partials/footer") %>

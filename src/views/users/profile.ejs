@@ -1,0 +1,49 @@
+<%- include("/partials/head") {title: "Profile"} %>
+<%- include("/partials/header") {title: `${user.name}"s Profile`} %>
+
+<div class="profile-container">
+    <h1>Welcome, <%= user.name %>!</h1>
+
+    <% include("/partials/flash") %>
+
+    <div class="profile-info">
+        <p><strong>Name:</strong> <%= user.name %></p>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        <p><strong>Role:</strong> <%= user.role %></p>
+    </div>
+
+    <div class="request-card">
+        <h2>Your Service Requests</h2>
+        <% if (serviceRequests.length > 0) { %>
+            <ul class="service-requests">
+                <% serviceRequests.forEach(request => { %>
+                    <li>
+                        <strong><%= request.vehicle_make %> <%= request.vehicle_model %></strong> - <%= request.status %><br>
+                        Submitted on: <%= new Date(request.created_at).toLocaleDateString() %><br>
+                        Description: <%= request.description %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>You have no service requests.</p>
+        <% } %>
+    </div>
+
+    <div class="profile-update">
+
+        <h2>Update Your Profile</h2>
+
+        <form action="/profile" method="POST" class="form">
+
+            <label for="name" class="form-label">Full Name</label>
+            <input type="text" name="name" id="name" value="<%= user.name %>" required>
+
+            <button type="submit">Update Profile</button>
+        </form>
+    </div>
+
+    <a href="/logout" class="logout-button">Logout</a>
+
+</div>
+
+<%- include("/partials/footer") %>

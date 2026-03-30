@@ -11,7 +11,7 @@ export const newContactMessage = async ({ subject, message, userId = null }) => 
         );
         return result.rows[0];
     } catch (error) {
-        console.error('Error, could not create contact message:', error);
+        console.error("Error, could not create contact message:", error);
         throw error;
     }
 }

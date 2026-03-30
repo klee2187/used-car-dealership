@@ -1,4 +1,4 @@
-import db from '../../models/db.js';
+import db from "../../models/db.js";
 
 // Get all vehicles
 export const getAllVehicles = async () => {
@@ -22,7 +22,7 @@ export const getAllVehicles = async () => {
 
         return result.rows;
     } catch (error) {
-        console.error('Error, could not get all vehicles:', error);
+        console.error("Error, could not get all vehicles:", error);
         throw error;
     }
 }
@@ -77,7 +77,7 @@ export const getVehiclesByCategoryId = async (categoryId) => {
 
         return result.rows[0] || null; 
     } catch (error) {
-        console.error('Error, could not get vehicles by category:', error);
+        console.error("Error, could not get vehicles by category:", error);
         throw error;
     }
 
@@ -105,7 +105,7 @@ export const getVehicleById = async (id) => {
 
         return result.rows[0] || null; 
     } catch (error) {
-        console.error('Error, could not get vehicle by ID:', error);
+        console.error("Error, could not get vehicle by ID:", error);
         throw error;
     }
 }

@@ -1,4 +1,4 @@
-import db from '../../models/db.js';
+import db from "../../models/db.js";
 
 // Get all categories
 export const getAllCategories = async () => {
@@ -17,7 +17,7 @@ export const getAllCategories = async () => {
         `);
         return result.rows;
     } catch (error) {
-        console.error('Error, could not get all categories:', error);
+        console.error("Error, could not get all categories:", error);
         throw error;
     }
 }
@@ -63,7 +63,7 @@ export const getCategoryById = async (id) => {
 
         return result.rows[0] || null; 
     } catch (error) {
-        console.error('Error, could not get category by ID:', error);
+        console.error("Error, could not get category by ID:", error);
         throw error;
     }
 }

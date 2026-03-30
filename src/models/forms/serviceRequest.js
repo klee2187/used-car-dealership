@@ -12,7 +12,7 @@ export const newServiceRequest = async ({ userId, vehicleId, status, description
         return result.rows[0];
 
     } catch (error) {
-        console.error('Error, could not create service request:', error);
+        console.error("Error, could not create service request:", error);
         throw error;    
     }
 }
@@ -30,7 +30,7 @@ export const updateServiceRequest = async ({ status, internalNotes, requestId, u
         return result.rows[0];
 
     } catch (error) {
-        console.error('Error, could not update service request:', error);
+        console.error("Error, could not update service request:", error);
         throw error;    
     }
 }
@@ -49,7 +49,7 @@ export const getUserServiceRequests = async (userId) => {
         return result.rows;
 
     } catch (error) {
-        console.error('Error, could not get service requests for user:', error);
+        console.error("Error, could not get service requests for user:", error);
         throw error;    
      }
 }

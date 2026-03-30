@@ -1,17 +1,21 @@
-<%- include('partials/header') %>
+<%-include("partials/head") {title: "Login"} %>
+<%- include("partials/header") {title: "Login Here"} %>
 
-<h1>Login to Your Account</h1>
+<div class="form-container">
+    <h1>Login to Your Account</h1>
 
-<form action="/login" method="POST" class="form">
-    <label for="email" class="form-label">Email</label>
-    <input type="email" name="email" id="email" required placeholder="Enter valid email">
+    <% include("partials/flash") %>
 
-    <label for="password" class="form-label">Password</label>
-    <input type="password" name="password" id="password" minlength="8" required placeholder="Enter password">
+    <form action="/login" method="POST" class="form">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" name="email" id="email" required placeholder="Enter valid email">
 
-    <button type="submit">Login</button>
-</form>
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" id="password" minlength="8" required placeholder="Enter password">
 
-<p>Don't have an account? <a href="/register">Register here</a>.</p>
+        <button type="submit">Login</button>
+    </form>
 
-<%- include('partials/footer') %>
+    <p>Don"t have an account? <a href="/register">Register here</a>.</p>
+</div>
+<%- include("partials/footer") %>

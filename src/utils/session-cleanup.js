@@ -1,4 +1,4 @@
-import db from '../models/db.js';
+import db from "../models/db.js";
 
 // This file contains a function to clean up expired sessions from the database. It runs automatically on server startup and then every 12 hours thereafter.
 const cleanupExpiredSessions = async () => {
@@ -12,13 +12,13 @@ const cleanupExpiredSessions = async () => {
         }
     } catch (error) {
         // Check if the error is due to the session table not existing (PostgreSQL error code 42P01)
-        if (error.code === '42P01') {
-            console.log('Session table does not exist yet:\n→ It will be created when the first session is initialized.');
+        if (error.code === "42P01") {
+            console.log("Session table does not exist yet:\n→ It will be created when the first session is initialized.");
             return;
         }
 
         // Log actual errors
-        console.error('Error cleaning up sessions:', error);
+        console.error("Error cleaning up sessions:", error);
     }
 };
 
@@ -31,7 +31,7 @@ const startSessionCleanup = () => {
     const twelveHours = 12 * 60 * 60 * 1000;
     setInterval(cleanupExpiredSessions, twelveHours);
 
-    console.log('Session cleanup scheduled to run every 12 hours');
+    console.log("Session cleanup scheduled to run every 12 hours");
 };
 
 export { startSessionCleanup };
