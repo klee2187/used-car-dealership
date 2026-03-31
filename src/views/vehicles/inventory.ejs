@@ -1,9 +1,9 @@
-<%- include("../partials/head", { title: `${category.name} Vehicles`, pageStyles: "vehicles" }) %>
+<%- include("../partials/head", { title: category ? `${category.name} Vehicles` : "All Vehicles", pageStyles: "vehicles" }) %>
 <%- include("../partials/header") %>
 
 <div class="inventory-container">
 
-    <h1><%= category.name %> Vehicles</h1>
+    <h1><%= category ? `${category.name} Vehicles` : "All Vehicles" %></h1>
 
     <% include("../partials/flash") %>
 
@@ -12,7 +12,7 @@
             <ul class="vehicle-grid">
                 <% vehicles.forEach(vehicle => { %>
                     <li class="vehicle-card">
-                        <img src="<%= vehicle.image_url %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
+                        <img src="<%= vehicle.image_url || '/images/default-car.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>" class="vehicle-image">
                         <h3 class="vehicle-title"><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h3>
                         <p class="vehicle-price">$<%= vehicle.price.toLocaleString() %></p>
                         <a href="/vehicles/<%= vehicle.slug %>">View Details</a>

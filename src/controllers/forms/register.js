@@ -48,7 +48,7 @@ export const registerUser = async (req, res) => {
     try {
         const existing = await getUserByEmail(email);
         if (existing) {
-            return res.render("auth/register", { error: "Email already registered" });
+            return res.render("forms/auth/register", { error: "Email already registered" });
         }
 
         const hashed = await bcrypt.hash(password, 10);
@@ -69,5 +69,5 @@ export const registerUser = async (req, res) => {
 };
 
 //Routes
-router.get("/register", (req, res) => res.render("auth/register"));
+router.get("/register", (req, res) => res.render("forms/auth/register"));
 router.post("/register", registerValidation, registerUser);

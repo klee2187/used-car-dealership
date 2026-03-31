@@ -5,19 +5,21 @@ export const getAllVehicles = async () => {
     try {
         const result = await db.query(`
             SELECT 
-                vehicle_id,
-                category_id 
-                make, 
-                model,
-                year,
-                slug,
-                price,
-                mileage,
-                description, 
-                is_available,
-                created_at
-            FROM vehicles
-            ORDER BY created_at DESC
+                v.vehicle_id,
+                v.category_id, 
+                v.make, 
+                v.model,
+                v.year,
+                v.slug,
+                v.price,
+                v.mileage,
+                v.description, 
+                v.is_available,
+                v.created_at,
+                vi.image_url
+            FROM vehicles v
+            LEFT JOIN vehicle_images vi ON v.vehicle_id = vi.vehicle_id
+            ORDER BY v.created_at DESC
         `);
 
         return result.rows;
@@ -32,19 +34,21 @@ export const getVehicleBySlug = async (slug) => {
     try {
         const result = await db.query(`
             SELECT 
-                vehicle_id,
-                category_id, 
-                make, 
-                model,
-                year,
-                slug,
-                price,
-                mileage,
-                description, 
-                is_available,
-                created_at
-            FROM vehicles
-            WHERE slug = $1
+                v.vehicle_id,
+                v.category_id, 
+                v.make, 
+                v.model,
+                v.year,
+                v.slug,
+                v.price,
+                v.mileage,
+                v.description, 
+                v.is_available,
+                v.created_at,
+                vi.image_url
+            FROM vehicles v
+            LEFT JOIN vehicle_images vi ON v.vehicle_id = vi.vehicle_id
+            WHERE v.slug = $1
         `, [slug]);
             
         return result.rows[0] || null;
@@ -59,20 +63,22 @@ export const getVehiclesByCategoryId = async (categoryId) => {
     try {
         const result = await db.query(`
             SELECT 
-                vehicle_id,
-                category_id,
-                make, 
-                model,
-                year,
-                slug,
-                price,
-                mileage,
-                description, 
-                is_available,
-                created_at
-            FROM vehicles
-            WHERE category_id = $1
-            ORDER BY year DESC
+                v.vehicle_id,
+                v.category_id,
+                v.make, 
+                v.model,
+                v.year,
+                v.slug,
+                v.price,
+                v.mileage,
+                v.description, 
+                v.is_available,
+                v.created_at, 
+                vi.image_url
+            FROM vehicles v
+            LEFT JOIN vehicle_images vi ON v.vehicle_id = vi.vehicle_id
+            WHERE v.category_id = $1
+            ORDER BY v.year DESC
         `, [categoryId]);  
 
         return result.rows || []; 
@@ -88,19 +94,21 @@ export const getVehicleById = async (id) => {
     try {
         const result = await db.query(`
             SELECT 
-                vehicle_id,
-                category_id, 
-                make, 
-                model,
-                year,
-                slug,
-                price,
-                mileage,
-                description, 
-                is_available,
-                created_at
-            FROM vehicles
-            WHERE vehicle_id = $1
+                v.vehicle_id,
+                v.category_id, 
+                v.make, 
+                v.model,
+                v.year,
+                v.slug,
+                v.price,
+                v.mileage,
+                v.description, 
+                v.is_available,
+                v.created_at,
+                vi.image_url
+            FROM vehicles v
+            LEFT JOIN vehicle_images vi ON v.vehicle_id = vi.vehicle_id
+            WHERE v.vehicle_id = $1
         `, [id]);  
 
         return result.rows[0] || null; 

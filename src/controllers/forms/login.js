@@ -44,7 +44,7 @@ const loginValidation = [
 // Display the login form page
 const showLoginForm = (req, res) => {
 
-    res.render("forms/login/form", { 
+    res.render("forms/auth/login", { 
         title : "User Login"})
 };
 

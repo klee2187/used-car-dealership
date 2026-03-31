@@ -4,12 +4,16 @@ import { getCategoryById } from "../../models/category/Category.js";
 
 
 // Show all vehicles
-export const showAllVehicles = async (requestAnimationFrame, res) => {
+export const showAllVehicles = async (req, res) => {
     try {
         const vehicles = await getAllVehicles();
-        res.render("vehicles/index", {
+
+        res.render("vehicles/inventory", {
             title: "All Vehicles",
-            vehicles
+            vehicles,
+            category: null,
+            success: req.flash("success"),
+            error: req.flash("error")
         });
     } catch (error) {
         console.error("Error loading vehicles page:", error);
@@ -27,7 +31,7 @@ export const showVehicleBySlug = async (req, res) => {
         }
 
         const category = await getCategoryById(vehicle.category_id);
-        res.render("vehicles/detail", {
+        res.render("vehicles/details", {
             title: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
             vehicle,
             category

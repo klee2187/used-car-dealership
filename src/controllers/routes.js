@@ -1,9 +1,8 @@
 //------------Import dependencies and controllers------------
 import { Router } from "express";
 import { showCategories, showCategoryBySlug } from "./categories/categories.js";
-import { showAllVehicles,  showVehicleBySlug } from "./vehicle/vehicles.js";
+import { showAllVehicles,  showVehicleBySlug } from "./vehicles/vehicles.js";
 import { showRegistrationForm, registerUser, showLoginForm, loginUser, logoutUser, showProfile } from "./users/users.js";
-import { title } from "process";
 
 //------------Initialize Router------------
 const router = Router();
@@ -15,7 +14,7 @@ router.get("/", (req, res) => {
 router.get("/about", (req, res) => {
     res.render("about", { title: "About Auto-Correct Motors" });
 });
-router.get("/contact", (req, res) => {
+router.get("/contact/form", (req, res) => {
     res.render("forms/contact/form", {title: "Contact Us"});
 });
 

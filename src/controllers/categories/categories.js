@@ -1,22 +1,10 @@
 // Imports
-import { getAllCategories, getCategoryBySlug } from "../../models/category/Category.js";
+import { getCategoryBySlug } from "../../models/category/Category.js";
 import { getVehiclesByCategoryId } from "../../models/vehicle/Vehicle.js";
 
-// Show all categories
+// Redirect /categories to /vehicles
 export const showCategories = async (req, res) => {
-    try {
-        const categories = await getAllCategories();
-        res.render("categories/index", {
-            title: "Browse Categories",
-            categories,
-            success: req.flash("success"),
-            error: req.flash("error")
-        });
-    } catch (error) {
-        console.error("Error loading categories page:", error);
-        req.flash("error", "Sorry, something went wrong while loading the categories. Please try again later.");
-        res.redirect("/");
-    }
+   return res.redirect("/vehicles");
 }
 
 
@@ -27,7 +15,7 @@ export const showCategoryBySlug = async (req,res) => {
         const category = await getCategoryBySlug(slug);
         if (!category) {
             req.flash("error", "Category not found");
-            return res.redirect("/categories"); 
+            return res.redirect("/vehicles"); 
         }
 
         const vehicles = await getVehiclesByCategoryId(category.category_id);
@@ -43,6 +31,6 @@ export const showCategoryBySlug = async (req,res) => {
     } catch (error) {
         console.error("Error loading category page:", error);
         req.flash("error", "Sorry, something went wrong while loading that category. Please try again later.");
-        res.redirect("/categories");
+        res.redirect("/vehicles");
     }
 }
