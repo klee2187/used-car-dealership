@@ -1,7 +1,9 @@
-<%-include ("/partials/head")%>
-<%- include("/partials/header") %>
+<%-include ("../../partials/head", {title: "Customer Reviews", pageStyles: "forms" }) %>
+<%- include("../../partials/header", {title: "Customer Reviews"} ) %>
 
 <div class="reviews-container">
+
+    <% include("../../partials/flash") %>
     
     <h1>Customer Reviews</h1>
 
@@ -48,3 +50,5 @@
      </div>
      
 </div>
+
+<%- include("../../partials/footer") %>

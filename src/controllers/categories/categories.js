@@ -7,33 +7,42 @@ export const showCategories = async (req, res) => {
     try {
         const categories = await getAllCategories();
         res.render("categories/index", {
-            title: "Vehicle Categories",
+            title: "Browse Categories",
             categories,
+            success: req.flash("success"),
+            error: req.flash("error")
         });
-        } catch (error){
+    } catch (error) {
         console.error("Error loading categories page:", error);
-        res.status(500).send("Server Error");
-        }
+        req.flash("error", "Sorry, something went wrong while loading the categories. Please try again later.");
+        res.redirect("/");
     }
+}
 
-// Show one single category page by slug
+
+// Show one single category by slug
 export const showCategoryBySlug = async (req,res) => {
     try {
         const { slug } = req.params;
         const category = await getCategoryBySlug(slug);
         if (!category) {
-            return res.status(404).render("404", { message: "Category not found"});
+            req.flash("error", "Category not found");
+            return res.redirect("/categories"); 
         }
 
         const vehicles = await getVehiclesByCategoryId(category.category_id);
-        res.render("categories/detail", {
+
+        res.render("vehicles/inventory", {
             title: category.name,
             category,
             vehicles,
+            success: req.flash("success"),
+            error: req.flash("error")
         });
 
     } catch (error) {
         console.error("Error loading category page:", error);
-        res.status(500).send("Server Error");
+        req.flash("error", "Sorry, something went wrong while loading that category. Please try again later.");
+        res.redirect("/categories");
     }
 }

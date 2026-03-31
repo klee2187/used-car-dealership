@@ -1,10 +1,10 @@
-<%- include("/partials/head") {title: "Profile"} %>
-<%- include("/partials/header") {title: `${user.name}"s Profile`} %>
+<%- include("../partials/head", {title: "Profile"} ) %>
+<%- include("../partials/header", {title: `${user.name}"s Profile`} ) %>
 
 <div class="profile-container">
     <h1>Welcome, <%= user.name %>!</h1>
 
-    <% include("/partials/flash") %>
+    <% include("../partials/flash") %>
 
     <div class="profile-info">
         <p><strong>Name:</strong> <%= user.name %></p>
@@ -46,4 +46,4 @@
 
 </div>
 
-<%- include("/partials/footer") %>
+<%- include("../partials/footer") %>

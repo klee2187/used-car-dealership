@@ -5,7 +5,7 @@ import { getUserByEmail, createUser, getUserById } from "../../models/user/User.
 
 // GET /register
 export const showRegistrationForm = (req, res) => {
-    res.render("forms/register/form", {
+    res.render("forms/auth/register", {
         title: "Sign Up Here"
     });
 };
@@ -20,7 +20,7 @@ export const registerUser = async (req, res) => {
     }
 
     try {
-        const { name, email, password } = req.body;
+        const { first_name, last_name, email, username, password} = req.body;
 
         // Check if user already exists
         const existingUser = await getUserByEmail(email);
@@ -34,10 +34,12 @@ export const registerUser = async (req, res) => {
 
         // Create the user
         const newUser = await createUser({ 
-            name, 
+            first_name,
+            last_name,
             email, 
-            password: hashedPassword,
-        role: "customer" 
+            username,
+            password_hash: hashedPassword,
+            role: "customer" 
     });
 
         req.flash("success", "Account created successfully. Please log in.");
@@ -52,7 +54,7 @@ export const registerUser = async (req, res) => {
 
 //GET /login
 export const showLoginForm = (req, res) => {
-    res.render("forms/login/form", {
+    res.render("forms/auth/login", {
         title: "Sign in Here"
     });
 };
@@ -70,7 +72,7 @@ export const loginUser = async (req, res) => {
             return res.redirect("/login");
         }
 
-        const match = await bcrypt.compare(password, user.password);
+        const match = await bcrypt.compare(password, user.password_hash);
 
         if (!match) {
             req.flash("error", "Invalid email or password");
@@ -80,12 +82,14 @@ export const loginUser = async (req, res) => {
         // Save user to session
         req.session.user = {
             user_id: user.user_id,
-            name: user.name,
+            first_name: user.first_name,
+            last_name: user.last_name,
             email: user.email,
+            username: user.username,
             role: user.role
         };
 
-        req.flash("success", `Login successful. Welcome back, ${user.name}`);
+        req.flash("success", `Login successful. Welcome back, ${user.first_name}`);
         res.redirect("/");
     } catch (error) {
         console.error("Login error:", error);
@@ -118,11 +122,12 @@ export const showProfile = async (req, res) => {
             return res.redirect("/login");
         }
 
-        const user = await getUserById(req.session.user.user_id);
+        const user = await getUserById({ user_id: req.session.user.user_id });
 
-        res.render("user/profile", {
-            title: `${user.name}"s Profile`,
-            user
+        res.render("users/profile", {
+            title: `${user.first_name} ${user.last_name}'s Profile`,
+            user,
+            serviceRequests: []
         });
     } catch (error) {
         console.error(error);

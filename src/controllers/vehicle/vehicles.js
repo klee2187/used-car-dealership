@@ -23,7 +23,7 @@ export const showVehicleBySlug = async (req, res) => {
         const { slug } = req.params;
         const vehicle = await getVehicleBySlug(slug);
         if (!vehicle) {
-            return res.status(404).render("404", { message: "Vehicle not found"});
+            return res.status(404).render("errors/404", { message: "Vehicle not found"});
         }
 
         const category = await getCategoryById(vehicle.category_id);

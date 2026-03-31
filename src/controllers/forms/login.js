@@ -7,6 +7,22 @@ const router = Router();
 
 // Validation rules for login form
 const loginValidation = [
+    body("first_name")
+        .trim()
+        .isLength({ min: 1 })
+        .withMessage("First name is required")
+        .matches(/^[a-zA-Z\s\-]+$/)
+        .withMessage("First name can only contain letters, spaces, and hyphens")
+        .isLength({ max: 100 })
+        .withMessage("First name is too long"),
+    body("last_name")
+        .trim()
+        .isLength({ min: 1 })
+        .withMessage("Last name is required")
+        .matches(/^[a-zA-Z\s\-]+$/)
+        .withMessage("Last name can only contain letters, spaces, and hyphens")
+        .isLength({ max: 100 })
+        .withMessage("Last name is too long"),
     body("email")
         .trim()
         .isEmail()
@@ -14,11 +30,15 @@ const loginValidation = [
         .normalizeEmail()
         .isLength({ max:255 })
         .withMessage("Email address is too long"),
-    body("password")
+    body("password_hash")
         .notEmpty()
         .withMessage("Password is require")
         .isLength({ min: 8, max: 128 })
-        .withMessage("Password must be between 8 and 128")
+        .withMessage("Password must be between 8 and 128"),
+    body("role")
+        .optional()
+        .isIn(["customer", "admin"])
+        .withMessage("Invalid role specified")
 ];
 
 // Display the login form page
@@ -43,7 +63,7 @@ if (!errors.isEmpty()) {
 }
 
     // Extract validated data from the request body
-    const { email, password } = req.body;
+    const { first_name, last_name, email, password_hash, role } = req.body;
 
     try {
         const user = await findUserByEmail(email);
@@ -53,7 +73,7 @@ if (!errors.isEmpty()) {
             return res.redirect("/login");
         }
 
-        const passwordVerification = await verifyPassword(password, user.password);
+        const passwordVerification = await verifyPassword(password_hash, user.password_hash);
 
         if (!passwordVerification) {
             req.flash("error", "Invalid email or password")
@@ -79,8 +99,6 @@ if (!errors.isEmpty()) {
 const processLogout = (req, res) => {
     // First, check if there is a session object on the request
     if (!req.session) {
-        // If no session exists, there"s nothing to destroy,
-        // so we just redirect the user back to the home page
         return res.redirect("/");
     }
 
@@ -89,18 +107,11 @@ const processLogout = (req, res) => {
         if (err) {
             // If something goes wrong while removing the session from the database:
             console.error("Error destroying session:", err);
-
-            // Attempt to clear the session cookie from the browser anyway, even if session destruction failed
             res.clearCookie("connect.sid");
-
-            // Redirect the user to the home page regardless of the error, since we can"t do much about it at this point
             return res.redirect("/");
         }
 
-        // If session destruction succeeded, clear the session cookie from the browser
         res.clearCookie("connect.sid");
-
-        // Redirect the user to the home page
         res.redirect("/");
     });
 };

@@ -1,8 +1,10 @@
-<%- include("partials/head", { title: "Rate Us" }) %>
-<%- include("partials/header", { title: "Say Your Piece" }) %>
+<%- include("../../partials/head", { title: "Rate Us" }) %>
+<%- include("../../partials/header", { title: "Say Your Piece" }) %>
 
 <div class="form-container">
     <h1>Pick apart <%= vehicle.make %> <%= vehicle.model %></h1>
+
+    <% include("../../partials/flash") %>
 
     <form action="/review/<%= vehicle.vehicle_id %>" method="POST" class="form">
 
@@ -44,4 +46,4 @@
     </form>
 </div>
 
-    <%- include("partials/footer") %>
+    <%- include("../../partials/footer") %>

@@ -33,7 +33,7 @@ export const getVehicleBySlug = async (slug) => {
         const result = await db.query(`
             SELECT 
                 vehicle_id,
-                category_id 
+                category_id, 
                 make, 
                 model,
                 year,
@@ -60,7 +60,7 @@ export const getVehiclesByCategoryId = async (categoryId) => {
         const result = await db.query(`
             SELECT 
                 vehicle_id,
-                category_id 
+                category_id,
                 make, 
                 model,
                 year,
@@ -71,11 +71,11 @@ export const getVehiclesByCategoryId = async (categoryId) => {
                 is_available,
                 created_at
             FROM vehicles
-            WHERE vehicle_id = $1
+            WHERE category_id = $1
             ORDER BY year DESC
         `, [categoryId]);  
 
-        return result.rows[0] || null; 
+        return result.rows || []; 
     } catch (error) {
         console.error("Error, could not get vehicles by category:", error);
         throw error;
@@ -89,7 +89,7 @@ export const getVehicleById = async (id) => {
         const result = await db.query(`
             SELECT 
                 vehicle_id,
-                category_id 
+                category_id, 
                 make, 
                 model,
                 year,

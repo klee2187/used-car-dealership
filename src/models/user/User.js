@@ -5,7 +5,7 @@ import db from "../db.js";
 export const getUserByEmail = async (email) => {
     try {
         const result = await db.query(
-            `SELECT user_id, name, email, password, role
+            `SELECT user_id, first_name, last_name, email, password_hash, role
             FROM users
             WHERE email = $1`, 
             [email]);
@@ -17,13 +17,13 @@ export const getUserByEmail = async (email) => {
 }
 
 // Create new user (registration)
-export const createUser = async ({ name, email, password, role = "customer"}) => {
+export const createUser = async ({ first_name, last_name, email, username, password_hash, role = "customer"}) => {
     try {
         const result = await db.query(
-            `INSERT INTO users (name, email, password, role)
-            VALUES ($1, $2, $3, $4)
-            RETURNING user_id, name, email, role`, 
-            [name, email, password, role]);
+            `INSERT INTO users (first_name, last_name, email, username, password_hash, role)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING user_id, first_name, last_name, email, username, role`, 
+            [first_name, last_name, email, username, password_hash, role]);
         return result.rows[0];
     } catch (error) {
         console.error("Error, could not create user:", error);
@@ -35,7 +35,7 @@ export const createUser = async ({ name, email, password, role = "customer"}) =>
 export const getUserById = async ({ user_id }) => {
     try {
         const result = await db.query(
-            `SELECT user_id, name, email, role
+            `SELECT user_id, first_name, last_name, email, username, password_hash, role
             FROM users
             WHERE user_id = $1`, 
             [user_id]

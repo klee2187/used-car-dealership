@@ -1,6 +1,9 @@
+<%- include("../../partials/head", { title: "Contact Form Submissions", pageStyles: "forms" }) %>
 <%- include("../../partials/header") %>
 <div>
     <h1>Contact Form Submissions</h1>
+
+    <% include("../../partials/flash") %>
 
     <% if (contactForms && contactForms.length > 0) { %>
         <div class="contact-responses">

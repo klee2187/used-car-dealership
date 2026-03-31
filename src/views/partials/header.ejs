@@ -3,12 +3,14 @@
         <a class="brand" href="/">Auto-Correct Motors</a> 
         <nav> 
             <a href="/">Home</a> 
+            <a href="/about">About</a>
             <a href="/vehicles/inventory">Inventory</a> 
-            <a href="../../contact/form">Contact Us</a> 
+            <a href="/contact/form">Contact Us</a> 
 
             <!-- Show login/register links if not authenticated, otherwise show logout link -->
             <% if (locals.user) { %>
-              <a href="/home">Home</a>
+              <a href="/">Home</a>
+              <a href="/profile">Profile</a>
               <a href="/logout">Logout</a>
             <% } else { %>
               <a href="/login">Login</a>
