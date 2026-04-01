@@ -10,6 +10,7 @@ import dotenv from "dotenv";
 import db, { caCert } from "./src/models/db.js";
 import { setupDatabase, testConnection } from "./src/models/setup.js";
 import router from "./src/controllers/routes.js";
+import adminRoutes from "./src/contollaers/routes.js";
 dotenv.config();
 
 // ------------Setup __dirname for ES modules------------
@@ -69,8 +70,10 @@ app.get("/test-session", (req, res) => {
 });
 
 // ------------Start the Server------------
-app.listen(PORT, async () => {
+if (process.env.NODE_ENV !== "test") {
+    app.listen(PORT, async () => {
     await setupDatabase();
     await testConnection();
     console.log(`Server is running on http://127.0.0.1:${PORT}`); 
 });
+}
