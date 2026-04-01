@@ -21,6 +21,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 
+// In production, ensure we have the necessary environment variables
+app.set("trust proxy", 1); 
+
 // ------------Static files------------
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
