@@ -10,7 +10,6 @@ import dotenv from "dotenv";
 import db, { caCert } from "./src/models/db.js";
 import { setupDatabase, testConnection } from "./src/models/setup.js";
 import router from "./src/controllers/routes.js";
-import adminRoutes from "./src/contollaers/routes.js";
 dotenv.config();
 
 // ------------Setup __dirname for ES modules------------
