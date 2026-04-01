@@ -3,6 +3,9 @@ import { Router } from "express";
 import { showCategories, showCategoryBySlug } from "./categories/categories.js";
 import { showAllVehicles,  showVehicleBySlug } from "./vehicles/vehicles.js";
 import { showRegistrationForm, registerUser, showLoginForm, loginUser, logoutUser, showProfile } from "./users/users.js";
+import { isAdmin } from "../middleware/role.js";
+import { showAllUsers, showAdminDashboard } from "./admin/admin.js";
+import { requireLogin } from "../middleware/auth.js";
 
 //------------Initialize Router------------
 const router = Router();
@@ -17,6 +20,10 @@ router.get("/about", (req, res) => {
 router.get("/contact/form", (req, res) => {
     res.render("forms/contact/form", {title: "Contact Us"});
 });
+
+//------------Admin routes------------
+router.get("/admin/users", requireLogin, isAdmin, showAllUsers);
+router.get("/admin/dashboard", requireLogin, isAdmin, showAdminDashboard);
 
 //------------Category routes------------
 router.get("/categories", showCategories);

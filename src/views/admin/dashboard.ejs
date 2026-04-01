@@ -1,0 +1,39 @@
+<%- include("../partials/head", {title: "Admin Dashboard"}) %>
+<%- include("../partials/header") %>
+
+<div class="admin-dashboard">
+
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, <%= user.name %>!</p>
+
+    <div class="admin-grid">
+
+        <a href="/admin/manageUsers" class="admin-link">
+            <h2>Manage Users></h2>
+            <p>View and manage all registered users and roles.</p>
+        </a>
+
+        <a href="/admin/manageVehicles" class="admin-link">
+            <h2>Manage Vehicles></h2>
+            <p>View and manage all vehicles in the inventory.</p>
+        </a>
+        <a href="/admin/manageCategories" class="admin-link">
+            <h2>Manage Categories></h2>
+            <p>View and manage all vehicle categories.</p>
+        </a>
+        <a href="/admin/manageRequests" class="admin-link">
+            <h2>Manage Requests></h2>
+            <p>View and manage all user requests.</p>
+        </a>
+        <a href="/admin/manageMessages" class="admin-link">
+            <h2>Check Messages></h2>
+            <p>View and manage all user messages.</p>
+        </a>
+        <a href="/admin/manageReviews" class="admin-link">
+            <h2>Moderate Reviews></h2>
+            <p>View and manage all user reviews.</p>
+        </a>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>

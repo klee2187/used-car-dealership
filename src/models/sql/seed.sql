@@ -117,7 +117,8 @@ VALUES
   ('Brianna', 'Clutch', 'brianna.clutch@example.com', 'briannaclutch', '$2b$10$mm22nn33oo44pp55qq66rr77ss88tt99uu00vv11ww22xx33yy', 'customer'),
   ('Trevor', 'Gearson', 'trevor.gearson@example.com', 'trevorgearson', '$2b$10$zz11yy22xx33ww44vv55uu66tt77ss88rr99qq00pp11oo22nn', 'employee'),
   ('Megan', 'Axle', 'megan.axle@example.com', 'meganaxle', '$2b$10$ff44ee55dd66cc77bb88aa99zz00yy11xx22ww33vv44uu55tt', 'customer'),
-  ('Admin', 'Master', 'admin@example.com', 'admin', '$2b$10$adminadminadminadminadminadminadminadminadminadmi', 'owner')
+  ('Admin', 'Master', 'admin@example.com', 'admin', '$2b$10$adminadminadminadminadminadminadminadminadminadmi', 'owner'),
+  ('Kristen', 'Lee', 'admin1@example.com', 'admin1', 'P@$$w0rd!', 'owner')
   ON CONFLICT (email) DO NOTHING;
 
 
@@ -153,14 +154,14 @@ VALUES
 -- Insert vehicle images
 INSERT INTO vehicle_images (vehicle_id, image_url, alt_text)
 VALUES
-  (1, 'https://via.placeholder.com/800x600?text=Toyota+Corolla+2004', '2004 Toyota Corolla'),
-  (2, 'https://via.placeholder.com/800x600?text=Jeep+Wrangler+1999', '1999 Jeep Wrangler'),
-  (3, 'https://via.placeholder.com/800x600?text=Ford+F150+2001', '2001 Ford F-150'),
-  (4, 'https://via.placeholder.com/800x600?text=Dodge+Charger+2010', '2010 Dodge Charger'),
-  (5, 'https://via.placeholder.com/800x600?text=BMW+Z4+2005', '2005 BMW Z4'),
-  (6, 'https://via.placeholder.com/800x600?text=Chrysler+Town+and+Country+2008', '2008 Chrysler Town & Country'),
-  (7, 'https://via.placeholder.com/800x600?text=Nissan+Leaf+2013', '2013 Nissan Leaf'),
-  (8, 'https://via.placeholder.com/800x600?text=Toyota+Prius+2007', '2007 Toyota Prius');
+  (1, 'public/images/cars/2004-toyota-corolla.webp', '2004 Toyota Corolla'),
+  (2, 'public/images/cars/1999-jeep-wrangler.webp', '1999 Jeep Wrangler'),
+  (3, 'public/images/cars/2001-ford-f-150.webp', '2001 Ford F-150'),
+  (4, 'public/images/cars/2010-dodge-charger.webp', '2010 Dodge Charger'),
+  (5, 'public/images/cars/2005-bmw-z4.webp', '2005 BMW Z4'),
+  (6, 'public/images/cars/2008-chrysler-town-and-country', '2008 Chrysler Town & Country'),
+  (7, 'public/images/cars/2013-nissan-leaf.webp', '2013 Nissan Leaf'),
+  (8, 'public/images/cars/2007-toyota-prius.webp', '2007 Toyota Prius');
 
 
 -- Insert reviews

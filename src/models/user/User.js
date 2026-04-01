@@ -1,6 +1,22 @@
 // Imports
 import db from "../db.js";
 
+//Get all users (for admin)
+export const getAllUsers = async () => {
+    try {
+        const result = await db.query(
+            `SELECT user_id, first_name, last_name, email, username, role
+            FROM users 
+            ORDER BY last_name, first_name ASC`
+        );
+
+        return result.rows;
+    } catch (error) {
+        console.error("Error, could not get all users:", error);
+        throw error;
+    }
+};
+
 // Get user by email
 export const getUserByEmail = async (email) => {
     try {

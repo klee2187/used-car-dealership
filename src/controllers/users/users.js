@@ -91,6 +91,7 @@ export const loginUser = async (req, res) => {
 
         req.flash("success", `Login successful. Welcome back, ${user.first_name}`);
         res.redirect("/");
+
     } catch (error) {
         console.error("Login error:", error);
         req.flash("error", "Login failed. Please try again later.");
@@ -116,6 +117,7 @@ export const logoutUser = (req, res) => {
 
 // Show user profile page
 export const showProfile = async (req, res) => {
+
     try {
         if (!req.session.user) {
             req.flash("error", "You must be logged in to view your profile");
@@ -129,6 +131,7 @@ export const showProfile = async (req, res) => {
             user,
             serviceRequests: []
         });
+
     } catch (error) {
         console.error(error);
         req.flash("error", "An error occurred while fetching your profile");
