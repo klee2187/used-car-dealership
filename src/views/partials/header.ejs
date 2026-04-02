@@ -9,8 +9,12 @@
 
             <!-- Show login/register links if not authenticated, otherwise show logout link -->
             <% if (locals.user) { %>
-              <a href="/admin/dashboard">Admin Dashboard</a>
               <a href="/profile">Profile</a>
+              <% if (locals.user.role === "admin") { %>
+                <a href="/admin/dashboard">Admin Dashboard</a>
+              <% } else if (locals.user.role === "employee") { %>
+                <a href="/employee/dashboard">Employee Dashboard</a>
+              <% } %>
               <a href="/logout">Logout</a>
             <% } else { %>
               <a href="/login">Login</a>

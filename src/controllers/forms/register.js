@@ -5,17 +5,55 @@ import bcrypt from "bcrypt";
 
 export const router = Router();
 
-const errors = validationResult(req);
+// POST /register
+export const registerUser = async (req, res) => {
+    const errors = validationResult(req);
 
-if (!errors.isEmpty()) {
-    req.flash("error", "Please fix the errors in the form and try again");
-    return res.render("forms/auth/register", {
-        title: "Sign Up Here",
-        error: errors.array(),
-        old: req.body
+    if (!errors.isEmpty()) {
+        req.flash("error", "Please fix the errors in the form and try again");
+        return res.redirect("/register");
+    }
+
+    try {
+        const { first_name, last_name, email, username, password} = req.body;
+
+        // Check if user already exists
+        const existingUser = await getUserByEmail(email);
+        if (existingUser) {
+            req.flash("error", "Account already exists for this user");
+            return res.redirect("/register");
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create the user
+        const newUser = await createUser({ 
+            first_name,
+            last_name,
+            email, 
+            username,
+            password_hash: hashedPassword,
+            role: "customer" 
     });
-}
 
+        req.flash("success", "Account created successfully. Please log in.");
+        res.redirect("/login");
+
+    } catch (error) {
+        console.error("Registration error:", error);
+        req.flash("error", "Something went wrong while creating your account. Please try again later.");
+        res.redirect("/register");
+    }
+}
+// GET /register
+export const showRegistrationForm = (req, res) => {
+    res.render("forms/auth/register", {
+        title: "Sign Up Here"
+    });
+};
+
+// POST /register
 export const registerValidation = [
     body("first_name")
         .trim()
@@ -64,38 +102,7 @@ export const registerValidation = [
         .withMessage("Passwords must match"),
 ];
 
-// Registration handler
-export const registerUser = async (req, res) => {
-    
-    const { first_name, last_name, username, email, password } = req.body;
-    try {
-        const existing = await getUserByEmail(email);
-        if (existing) {
-            return res.render("forms/auth/register", { error: "Email already registered", old: req.body });
-        }
-
-        const hashed = await bcrypt.hash(password, 10);
-
-        const user = await createUser({ 
-            first_name, 
-            last_name,
-            username,
-            email, 
-            password_hash: hashed, 
-            role: "customer"
-        });
-
-        req.session.user = user;
-        req.flash("success", "Account created successfully. Please log in.");
-        res.redirect("/login");
-
-    } catch (error) {
-        console.error("Error during registration:", error);
-        req.flash("error", "Something went wrong while creating your account. Please try again later.");
-        res.status(500).send("Server error during registration");
-    }
-};
-
 //Routes
-router.get("/register", (req, res) => res.render("forms/auth/register"));
+router.get("/register", showRegistrationForm);
 router.post("/register", registerValidation, registerUser);
+

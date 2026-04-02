@@ -2,12 +2,12 @@
 import { Router } from "express";
 import { showCategories, showCategoryBySlug } from "./categories/categories.js";
 import { showAllVehicles,  showVehicleBySlug } from "./vehicles/vehicles.js";
-import { showRegistrationForm, registerUser, showLoginForm, loginUser, logoutUser } from "./users/users.js";
 import { showProfile } from "./profile/profile.js";
 import { isAdmin } from "../middleware/role.js";
 import { showAllUsers, showAdminDashboard } from "./admin/admin.js";
 import { requireLogin } from "../middleware/auth.js";
-import { loginValidation } from "./forms/login.js";
+import { showRegistrationForm, registerUser, registerValidation } from "./forms/register.js";
+import { loginValidation, showLoginForm, loginUser, logoutUser  } from "./forms/login.js";
 import contactRoutes from "./forms/contact.js";
 
 //------------Initialize Router------------
@@ -32,10 +32,22 @@ router.get("/vehicles/:slug", showVehicleBySlug);
 //------------Admin routes------------
 router.get("/admin/users", requireLogin, isAdmin, showAllUsers);
 router.get("/admin/dashboard", requireLogin, isAdmin, showAdminDashboard);
+router.post("/admin/users/update", requireLogin, isAdmin, showAllUsers);
+router.post("/admin/users/delete", requireLogin, isAdmin, showAllUsers);
+
+//------------Employee routes------------
+router.get("/employee/dashboard", requireLogin, (req, res) => {
+    if (req.session.user.role === "employee") {
+        res.render("employee/dashboard", { title: "Employee Dashboard" });
+    } else {
+        req.flash("error", "Access denied. Employees only.");
+        res.redirect("/");
+    }
+});
 
 //------------User routes------------
 router.get("/register", showRegistrationForm);
-router.post("/register", registerUser);
+router.post("/register", registerValidation, registerUser);
 
 router.get("/login", showLoginForm);
 router.post("/login", loginValidation, loginUser); 

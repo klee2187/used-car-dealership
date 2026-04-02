@@ -40,8 +40,8 @@ const setHeadAssetsFunctionality = (res) => {
     res.locals.styles = [];
     res.locals.scripts = [];
 
-    res.addStyle = (css, priority = 0) => {
-        res.locals.styles.push({ content: css, priority });
+    res.addStyle = (profile, priority = 0) => {
+        res.locals.styles.push({ content: profile, priority });
     };
 
     res.addScript = (js, priority = 0) => {
