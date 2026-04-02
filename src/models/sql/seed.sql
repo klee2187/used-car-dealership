@@ -154,14 +154,14 @@ VALUES
 -- Insert vehicle images
 INSERT INTO vehicle_images (vehicle_id, image_url, alt_text)
 VALUES
-  (1, 'public/images/cars/2004-toyota-corolla.webp', '2004 Toyota Corolla'),
-  (2, 'public/images/cars/1999-jeep-wrangler.webp', '1999 Jeep Wrangler'),
-  (3, 'public/images/cars/2001-ford-f-150.webp', '2001 Ford F-150'),
-  (4, 'public/images/cars/2010-dodge-charger.webp', '2010 Dodge Charger'),
-  (5, 'public/images/cars/2005-bmw-z4.webp', '2005 BMW Z4'),
-  (6, 'public/images/cars/2008-chrysler-town-and-country', '2008 Chrysler Town & Country'),
-  (7, 'public/images/cars/2013-nissan-leaf.webp', '2013 Nissan Leaf'),
-  (8, 'public/images/cars/2007-toyota-prius.webp', '2007 Toyota Prius');
+  (1, '/images/cars/2004-toyota-corolla.webp', '2004 Toyota Corolla'),
+  (2, '/images/cars/1999-jeep-wrangler.webp', '1999 Jeep Wrangler'),
+  (3, '/images/cars/2001-ford-f-150.webp', '2001 Ford F-150'),
+  (4, '/images/cars/2010-dodge-charger.webp', '2010 Dodge Charger'),
+  (5, '/images/cars/2005-bmw-z4.webp', '2005 BMW Z4'),
+  (6, '/images/cars/2008-chrysler-town-and-country', '2008 Chrysler Town & Country'),
+  (7, '/images/cars/2013-nissan-leaf.webp', '2013 Nissan Leaf'),
+  (8, '/images/cars/2007-toyota-prius.webp', '2007 Toyota Prius');
 
 
 -- Insert reviews

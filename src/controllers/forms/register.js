@@ -6,12 +6,24 @@ import bcrypt from "bcrypt";
 const router = Router();
 
 const registerValidation = [
-    body("name")
+    body("first_name")
         .trim()
         .isLength({ min: 2, max: 100 })
-        .withMessage("Name must be between 2 and 100 characters")
+        .withMessage("First name must be between 2 and 100 characters")
         .matches(/^[a-zA-Z\s"-]+$/)
-        .withMessage("Names can only contain letters, spaces, hyphens, and apostrophes"),
+        .withMessage("First names can only contain letters, spaces, hyphens, and apostrophes"),
+    body("last_name")
+        .trim()
+        .isLength({ min: 2, max: 100 })
+        .withMessage("Last name must be between 2 and 100 characters")
+        .matches(/^[a-zA-Z\s"-]+$/)
+        .withMessage("Last names can only contain letters, spaces, hyphens, and apostrophes"),
+    body("username")
+        .trim()
+        .isLength({ min: 3, max: 50 })
+        .withMessage("Username must be between 3 and 50 characters")
+        .matches(/^[a-zA-Z0-9_-]+$/)
+        .withMessage("Username can only contain letters, numbers, underscores, and hyphens"),
     body("email")
         .trim()
         .isEmail()
@@ -44,7 +56,7 @@ const registerValidation = [
 // Registration handler
 export const registerUser = async (req, res) => {
     
-    const { name, email, password } = req.body;
+    const { first_name, last_name, username, email, password } = req.body;
     try {
         const existing = await getUserByEmail(email);
         if (existing) {
@@ -54,10 +66,13 @@ export const registerUser = async (req, res) => {
         const hashed = await bcrypt.hash(password, 10);
 
         const user = await createUser({ 
-            name, 
+            first_name, 
+            last_name,
+            username,
             email, 
-            password: hashed, 
-            role: "customer"});
+            password_hash: hashed, 
+            role: "customer"
+        });
 
         req.session.user = user;
         res.redirect("/dashboard");

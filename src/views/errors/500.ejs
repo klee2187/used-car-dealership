@@ -2,8 +2,7 @@
 <%- include("../partials/head", { title: "500 - Server Error", pageStyles: "errors" }) %>
 <%- include("../partials/header") %>
 <main>
-    <h1>Something Went Wrong</h1>
-    <p>We are experiencing technical difficulties. Our team has been notified and is working to fix the issue.</p>
+    <img src="/images/500.png" style="width: 100%;" alt="500 server error">
     <p><a href="/">Return to homepage</a></p>
     <% if (NODE_ENV === "development") { %>
         <details open>

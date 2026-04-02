@@ -1,3 +1,7 @@
+// ------------Load environment variables------------
+import dotenv from "dotenv";
+dotenv.config();
+
 // ------------Import necessary modules------------
 import express from "express";
 import session from "express-session";
@@ -5,12 +9,12 @@ import flash from "connect-flash";
 import path from "path";
 import { fileURLToPath } from "url";
 import connectPgSimple from "connect-pg-simple";
-import dotenv from "dotenv";
+
 
 import db, { caCert } from "./src/models/db.js";
 import { setupDatabase, testConnection } from "./src/models/setup.js";
 import router from "./src/controllers/routes.js";
-dotenv.config();
+
 
 // ------------Setup __dirname for ES modules------------
 const __filename = fileURLToPath(import.meta.url); 
@@ -57,6 +61,7 @@ app.use(session({
 app.use(flash());
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
+    res.locals.isLoggedIn = !!req.session.user;
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     next();

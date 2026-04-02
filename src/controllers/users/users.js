@@ -3,6 +3,7 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import { getUserByEmail, createUser, getUserById } from "../../models/user/User.js";
 
+
 // GET /register
 export const showRegistrationForm = (req, res) => {
     res.render("forms/auth/register", {

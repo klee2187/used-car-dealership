@@ -6,6 +6,7 @@ import { showRegistrationForm, registerUser, showLoginForm, loginUser, logoutUse
 import { isAdmin } from "../middleware/role.js";
 import { showAllUsers, showAdminDashboard } from "./admin/admin.js";
 import { requireLogin } from "../middleware/auth.js";
+import { loginValidation } from "./forms/login.js";
 
 //------------Initialize Router------------
 const router = Router();
@@ -38,7 +39,7 @@ router.get("/register", showRegistrationForm);
 router.post("/register", registerUser);
 
 router.get("/login", showLoginForm);
-router.post("/login", loginUser);
+router.post("/login", loginValidation, loginUser);
 
 router.get("/logout", logoutUser);
 router.get("/profile", showProfile);
