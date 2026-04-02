@@ -1,4 +1,4 @@
-import { getUserById } from "../../models/userModel.js";
+import { getUserById } from "../../models/user/User.js";
 
 // Show user profile page
 export const showProfile = async (req, res) => {
@@ -11,7 +11,7 @@ export const showProfile = async (req, res) => {
 
         const user = await getUserById({ user_id: req.session.user.user_id });
 
-        res.render("users/profile", {
+        res.render("profile/profile", {
             title: `${user.first_name} ${user.last_name}'s Profile`,
             user,
             serviceRequests: []
