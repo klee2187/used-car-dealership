@@ -5,7 +5,7 @@ export const showAllUsers = async (req, res) => {
 
     try {
         const users = await getAllUsers();
-        res.render("/admin/manageUser", { 
+        res.render("admin/manageUser", { 
             title: "Manage All Users", 
             users,
             success: req.flash("success"),
@@ -23,7 +23,7 @@ export const showAllUsers = async (req, res) => {
 export const showAdminDashboard = (req, res) => {
 
     try {
-        res.render("/admin/dashboard", { 
+        res.render("admin/dashboard", { 
             title: "Admin Dashboard",
             user: req.session.user,
             success: req.flash("success"),

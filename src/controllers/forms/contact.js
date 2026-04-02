@@ -1,68 +1,70 @@
 import { Router } from "express";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 import { newContactMessage, getAllContactForms } from "../../models/forms/contact.js";
+import { requireLogin } from "../../middleware/auth.js";
+import { isAdmin } from "../../middleware/role.js";
 
 const router = Router();
 
 // Display the contact form page
-const showContactForm = (req, res) => {
-    res.render("forms/contact/form", {
-        title: "Contact Us"
-    });
+export const showContactForm = (req, res) => {
+    try {
+        res.render("forms/contact/form", {
+            title: "Contact Us"
+        });
+    } catch (error) {
+        console.error("Error rendering contact form:", error);
+        req.flash("error", "Unable to load the contact form. Please try again later.");
+        res.render("forms/contact/form", {
+            title: "Contact Us"
+        });
+    }
 };
 
 // Handle contact form submission with validation
-const handleContactSubmission = async (req, res) => {
-    // Check for validation errors
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-        // Store each validation error as a separate flash message
-        errors.array().forEach(error => {
-            req.flash("error", error.msg);
-        });
-        // Redirect back to form without saving
-        return res.redirect("/contact");
-    }
-
-    // Extract validated data
+export const handleContactSubmission = async (req, res) => {
     const { subject, message } = req.body;
 
     try {
-        // Save to database
-        const { subject, message } = req.body;
-        await newContactMessage(subject, message);
+        await newContactMessage({
+            subject,
+            message,
+            userId: req.session.user?.id || null
+        });
+
         req.flash("success", "Thank you for contacting us! We will respond soon.");
         res.redirect("/contact");
 
     } catch (error) {
-        console.error("Error saving contact form:", error);
+        console.error("Error saving contact message:", error);
         req.flash("error", "Unable to submit your message. Please try again later.");
         res.redirect("/contact");
     }
 };
 
 // Admin route to view all contact form submissions
-const showContactResponses = async (req, res) => {
+export const showContactMessages = async (req, res) => {
     let contactForms = [];
 
     try {
         contactForms = await getAllContactForms();
     } catch (error) {
-        console.error("Error retrieving contact forms:", error);
+        console.error("Error retrieving contact form submissions:", error);
+        req.flash("error", "Unable to retrieve contact form submissions. Please try again later.");
     }
 
+    req.flash("success", "Contact form submissions retrieved successfully.");
     res.render("forms/contact/responses", {
         title: "Contact Form Submissions",
         contactForms
     });
 };
 
-// Define routes for contact form
-router.get("/contact/form", showContactForm);
+
 
 // POST /contact - Handle form submission with validation
-router.post("/contact",
+router.post(
+    "/",
     [
         body("subject")
             .trim()
@@ -84,10 +86,35 @@ router.post("/contact",
                 return true;
             })
     ],
-    handleContactSubmission
+    async (req, res) => {
+        const { subject, message } = req.body;
+        
+        try {
+            await newContactMessage({
+                subject,
+                message,
+                userId: req.session.user?.id || null
+            });
+
+            req.flash("success", "Thank you for contacting us! We will respond soon.");
+            res.redirect("/contact");
+
+        } catch (error) {
+            console.error("Error saving contact message:", error);
+            req.flash("error", "Unable to submit your message. Please try again later.");
+            res.redirect("/contact");
+        }
+
+    }
 );
 
-// Admin route to view all contact form submissions
-router.get("/responses", showContactResponses);
+// GET /contact
+router.get("/", showContactForm);
+
+// POST /contact
+router.post("/", handleContactSubmission);
+
+// Admin inbox
+router.get("/responses", requireLogin, isAdmin, showContactMessages);
 
 export default router;

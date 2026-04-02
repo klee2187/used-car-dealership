@@ -3,10 +3,10 @@ import { body, validationResult } from "express-validator";
 import { addVehicleReview, getVehicleReviews } from "../../models/forms/review.js";
 import { getVehicleBySlug } from "../../models/vehicle/Vehicle";
 
-const router = Router();
+export const router = Router();
 
 // Validation rules for review form
-const reviewValidation = [
+export const reviewValidation = [
     body("rating")
         .isInt({ min: 1, max: 5})
         .withMessage("Judge us in stars. Please provide a rating between 1 and 5."),
@@ -25,7 +25,7 @@ const reviewValidation = [
 ];
 
 // Display the review form page
-const showReviewForm = async (req, res) => {
+export const showReviewForm = async (req, res) => {
     const { slug } = req.params;
     let vehicle = await getVehicleBySlug(slug);
     let reviews = await getVehicleReviews(vehicle.vehicle_id);
@@ -76,7 +76,7 @@ export const createReview = async (req, res) => {
         res.redirect(`/vehicles/${slug}`);
 
     } catch (error) {
-        console.error("Error creating review:", error);
+        console.error("Error saving review:", error);
         req.flash("error", "Oops! Something went wrong. I guess you'll have to come back later.");
         return res.redirect(`/vehicles/${slug}`);
     }
@@ -84,5 +84,3 @@ export const createReview = async (req, res) => {
 
 router.get("/:slug", showReviewForm);
 router.post("/:slug", reviewValidation, createReview);
-
-export default router;

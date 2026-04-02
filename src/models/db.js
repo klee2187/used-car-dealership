@@ -26,6 +26,8 @@ if (!process.env.DB_URL) {
 // Create a new PostgreSQL connection pool with SSL configuration if enabled
 const pool = new Pool({ 
     connectionString: process.env.DB_URL, 
+    max: 2,
+    idleTimeoutMillis: 10000,
     ssl: useSSL 
     ? { 
         rejectUnauthorized: true, 

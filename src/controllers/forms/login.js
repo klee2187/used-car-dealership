@@ -1,7 +1,7 @@
 import { body, validationResult } from "express-validator";
 
 // Validation rules for login form
-const loginValidation = [
+export const loginValidation = [
     
     body("email")
         .trim()
@@ -25,10 +25,8 @@ const loginValidation = [
 ];
 
 // Display the login form page
-const showLoginForm = (req, res) => {
+export const showLoginForm = (req, res) => {
 
     res.render("forms/auth/login", { 
         title : "User Login"})
 };
-
-export { loginValidation, showLoginForm };

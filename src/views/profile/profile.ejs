@@ -1,10 +1,11 @@
 <%- include("../partials/head", {title: "Profile"} ) %>
 <%- include("../partials/header", {title: `${user.name}"s Profile`} ) %>
+<% include("../partials/flash") %>
 
 <div class="profile-container">
     <h1>Welcome, <%= user.name %>!</h1>
 
-    <% include("../partials/flash") %>
+
 
     <div class="profile-info">
         <p><strong>Name:</strong> <%= user.name %></p>

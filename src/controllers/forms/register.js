@@ -3,9 +3,20 @@ import { body, validationResult } from "express-validator";
 import { createUser, getUserByEmail} from "../../models/user/User.js";
 import bcrypt from "bcrypt";
 
-const router = Router();
+export const router = Router();
 
-const registerValidation = [
+const errors = validationResult(req);
+
+if (!errors.isEmpty()) {
+    req.flash("error", "Please fix the errors in the form and try again");
+    return res.render("forms/auth/register", {
+        title: "Sign Up Here",
+        error: errors.array(),
+        old: req.body
+    });
+}
+
+export const registerValidation = [
     body("first_name")
         .trim()
         .isLength({ min: 2, max: 100 })
@@ -60,7 +71,7 @@ export const registerUser = async (req, res) => {
     try {
         const existing = await getUserByEmail(email);
         if (existing) {
-            return res.render("forms/auth/register", { error: "Email already registered" });
+            return res.render("forms/auth/register", { error: "Email already registered", old: req.body });
         }
 
         const hashed = await bcrypt.hash(password, 10);
@@ -75,10 +86,12 @@ export const registerUser = async (req, res) => {
         });
 
         req.session.user = user;
-        res.redirect("/dashboard");
+        req.flash("success", "Account created successfully. Please log in.");
+        res.redirect("/login");
 
     } catch (error) {
-        console.error("Registration error:", error);
+        console.error("Error during registration:", error);
+        req.flash("error", "Something went wrong while creating your account. Please try again later.");
         res.status(500).send("Server error during registration");
     }
 };

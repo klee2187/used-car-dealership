@@ -1,10 +1,9 @@
 <%- include("../../partials/head", {title: "Sign Up", pageStyles: "forms" }) %>
 <%- include("../../partials/header", {title: "Sign Up Here"} ) %>
+<%- include("../../partials/flash") %>
 
 <div class="form-container">
     <h1>Register for an Account</h1>
-
-    <% include("../../partials/flash") %>
 
     <form action="/register" method="POST">
 

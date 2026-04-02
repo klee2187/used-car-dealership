@@ -1,10 +1,9 @@
 <%- include("../../partials/head", {title: "Service Request"} ) %>
 <%- include("../../partials/header", {title: "Service Form"} ) %>
+<% include("../../partials/flash") %>
 
 <div class="form-container">
     <h1>Request Service for <%= vehicle.make %> <%= vehicle.model %></h1>
-
-    <% include("../../partials/flash") %>
 
     <form action="/service-request/<%= vehicl.slug %>" method="POST" class="form">
     

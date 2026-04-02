@@ -3,7 +3,6 @@ import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import { getUserByEmail, createUser, getUserById } from "../../models/user/User.js";
 
-
 // GET /register
 export const showRegistrationForm = (req, res) => {
     res.render("forms/auth/register", {
@@ -60,7 +59,6 @@ export const showLoginForm = (req, res) => {
     });
 };
 
-
 // POST /login
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -102,40 +100,16 @@ export const loginUser = async (req, res) => {
 
 //GET /logout
 export const logoutUser = (req, res) => {
+        req.flash("success", "You have been logged out successfully.");
+
     req.session.destroy((err) => {
         
         if (err) {
             console.error("Logout error:", err);
-            req.flash("error", "Logout failed. Please try again later.");
-            return res.redirect("/");
+            return res.redirect("/dashboard");
         }
-        
         res.clearCookie("connect.sid");
-        req.flash("success", "You have been logged out successfully.");
         res.redirect("/");
     });
 }
 
-// Show user profile page
-export const showProfile = async (req, res) => {
-
-    try {
-        if (!req.session.user) {
-            req.flash("error", "You must be logged in to view your profile");
-            return res.redirect("/login");
-        }
-
-        const user = await getUserById({ user_id: req.session.user.user_id });
-
-        res.render("users/profile", {
-            title: `${user.first_name} ${user.last_name}'s Profile`,
-            user,
-            serviceRequests: []
-        });
-
-    } catch (error) {
-        console.error(error);
-        req.flash("error", "An error occurred while fetching your profile");
-        res.redirect("/");
-    }
-}

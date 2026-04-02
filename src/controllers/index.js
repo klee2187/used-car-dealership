@@ -7,7 +7,3 @@ export function home(req, res) {
 export function about(req, res) {
     res.render("about", { title: "About" });
 }
-
-export function contact(req, res) {
-    res.render("contact", { title: "Contact" });
-}

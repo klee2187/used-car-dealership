@@ -3,17 +3,17 @@ import { body, validationResult } from "express-validator";
 import { createServiceRequest } from "../../models/forms/serviceRequest.js";
 import { getVehicleBySlug } from "../../models/vehicle/Vehicle";
 
-const router = Router();
+export const router = Router();
 
 // Validation rules for service request form
-const serviceRequestValidation = [
+export const serviceRequestValidation = [
     body("description")
         .trim()
         .isLength({ min: 10 })
         .withMessage("Description must be at least 10 characters"),
 ];
 
-const showServiceRequestForm = async (req, res) => {
+export const showServiceRequestForm = async (req, res) => {
     const { slug } = req.params;
     let vehicle = await getVehicleBySlug(slug);
 
@@ -23,7 +23,7 @@ const showServiceRequestForm = async (req, res) => {
     });
 };
 
-const processServiceRequest = async (req, res) => {
+export const processServiceRequest = async (req, res) => {
     const errors = validationResult(req);
     const { slug } = req.params;
 

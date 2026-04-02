@@ -1,11 +1,10 @@
 <%- include("../partials/head", { title: category ? `${category.name} Vehicles` : "All Vehicles", pageStyles: "vehicles" }) %>
 <%- include("../partials/header") %>
+<%- include("../partials/flash") %>
 
 <div class="inventory-container">
 
     <h1><%= category ? `${category.name} Vehicles` : "All Vehicles" %></h1>
-
-    <% include("../partials/flash") %>
 
     <% if (vehicles && vehicles.length > 0) { %>
         <div class="vehicle-list">
