@@ -15,6 +15,7 @@ export const showAllVehicles = async (req, res) => {
             success: req.flash("success"),
             error: req.flash("error")
         });
+
     } catch (error) {
         console.error("Error loading vehicles page:", error);
         res.status(500).send("Server Error");
@@ -27,17 +28,24 @@ export const showVehicleBySlug = async (req, res) => {
         const { slug } = req.params;
         const vehicle = await getVehicleBySlug(slug);
         if (!vehicle) {
-            return res.status(404).render("errors/404", { message: "Vehicle not found"});
+            req.flash("error", "Vehicle not found");
+            return res.redirect("/vehicles");
         }
 
         const category = await getCategoryById(vehicle.category_id);
         res.render("vehicles/details", {
             title: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
             vehicle,
-            category
+            category,
+            user: req.session.user,
+            success: req.flash("success"),
+            error: req.flash("error")
         });
+
     } catch (error) {
         console.error("Error loading vehicle detail page:", error);
-        res.status(500).send("Server Error");
+        req.flash("error", "An error occurred while loading the vehicle details. Please try again later.");
+        res.redirect("/vehicles");
     }
 }
+

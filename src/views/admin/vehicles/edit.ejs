@@ -1,0 +1,45 @@
+<%- include("../../partials/head", { title: title, pageStyles: "admin" }) %>
+<%- include("../../partials/header") %>
+<%- include("../../partials/flash") %>
+
+<div class="admin-container">
+
+    <h1>Edit Vehicle</h1>
+
+    <form action="/admin/vehicles/<%= vehicle.vehicle_id %>?_method=PUT" method="POST" class="admin-form">
+
+        <input type="hidden" name="vehicleId" value="<%= vehicle.vehicle_id %>">
+        
+        <label for="make">Make</label>
+        <input type="text" name="make" id="make" value="<%= vehicle.make %>" required>
+
+        <label for="model">Model</label>
+        <input type="text" name="model" id="model" value="<%= vehicle.model %>" required>
+
+        <label for="year">Year</label>
+        <input type="number" name="year" id="year" value="<%= vehicle.year %>" required>
+
+        <label for="slug">Slug</label>
+        <input type="text" name="slug" id="slug" value="<%= vehicle.slug %>" required>
+
+        <label for="price">Price</label>
+        <input type="number" name="price" id="price" value="<%= vehicle.price %>" required>
+
+        <label for="mileage">Mileage</label>
+        <input type="number" name="mileage" id="mileage" value="<%= vehicle.mileage %>" required>
+
+        <label for="description">Description</label>
+        <textarea name="description" id="description" required><%= vehicle.description %></textarea>
+
+        <label for="isAvailable">Available</label>
+        <select name="isAvailable" id="isAvailable" required>
+            <option value="true" <%= vehicle.is_available ? "selected" : "" %>>Yes</option>
+            <option value="false" <%= !vehicle.is_available ? "selected" : "" %>>No</option>
+        </select>
+
+        <button type="submit">Update Vehicle</button>
+
+    </form>
+</div>
+
+<%- include("../../partials/footer") %>

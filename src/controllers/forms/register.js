@@ -3,7 +3,7 @@ import { body, validationResult } from "express-validator";
 import { createUser, getUserByEmail} from "../../models/user/User.js";
 import bcrypt from "bcrypt";
 
-export const router = Router();
+const router = Router();
 
 // POST /register
 export const registerUser = async (req, res) => {
@@ -106,3 +106,5 @@ export const registerValidation = [
 router.get("/register", showRegistrationForm);
 router.post("/register", registerValidation, registerUser);
 
+
+export default router;

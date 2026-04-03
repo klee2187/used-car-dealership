@@ -1,0 +1,35 @@
+<%- include("../../partials/head", { title: "Create New User", pageStyles: "admin" }) %>
+<%- include("../../partials/header") %>
+<%- include("../../partials/flash") %>
+
+<div class="admin-users">
+    <h1>Create New User</h1>
+
+    <form action="/admin/users/new" method="POST" class="admin-form">
+        <label for="first_name">First Name</label>
+        <input type="text" id="first_name" name="first_name" required>
+
+        <label for="last_name">Last Name</label>
+        <input type="text" id="last_name" name="last_name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" minlength="8" required>
+
+        <label for="role">Role</label>
+        <select id="role" name="role" required>
+            <option value="customer">Customer</option>
+            <option value="employee">Employee</option>
+            <option value="admin">Admin</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Create User</button>
+    </form>
+</div>
+
+<%- include("../../partials/footer") %>

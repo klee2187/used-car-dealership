@@ -1,6 +1,6 @@
-<%-include("../partials/head", { title: "Manage Users", pageStyles: "admin" })%>
-<%- include("../partials/header") %>
-<%- include("../partials/flash") %>
+<%-include("../../partials/head", { title: "Manage Users", pageStyles: "admin" })%>
+<%- include("../../partials/header") %>
+<%- include("../../partials/flash") %>
 
 <div class="admin-users">
 
@@ -14,6 +14,7 @@
                 <th>Email</th>
                 <th>Username</th>
                 <th>Role</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -24,10 +25,17 @@
                     <td><%= user.email %></td>
                     <td><%= user.username %></td>
                     <td><%= user.role %></td>
+                    
+                    <td>
+                        <a href="/admin/users/<%= user.user_id %>/edit" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="/admin/users/<%= user.user_id %>/delete" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             <% }) %>
         </tbody>
     </table>
 </div>
 
-<%- include("../partials/footer") %>
+<%- include("../../partials/footer") %>

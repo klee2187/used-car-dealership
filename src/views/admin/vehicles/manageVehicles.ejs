@@ -1,20 +1,21 @@
-<%- include("../partials/head", { title: "Manage Vehicles", pageStyles: "admin" }) %>
-<%- include("../partials/header") %>
-<%- include("../partials/flash") %>
+<%- include("../../partials/head", { title: "Manage Vehicles", pageStyles: "admin" }) %>
+<%- include("../../partials/header") %>
+<%- include("../../partials/flash") %>
 
 <div class="admin-container">
-    <h1>View Vehicles</h1>
+    <h1>Manage Vehicles</h1>
+
+    <a href="/admin/vehicles/new" class="btn btn-primary">Add New Vehicle</a>
 
     <table class="vehicle-table">
         <thead>
             <tr>
                 <th>Make</th>
                 <th>Model</th>
-                <th>Category</th>
                 <th>Year</th>
                 <th>Price</th>
                 <th>Mileage</th>
-                <th>Description</th>
+                <th>Category</th>
                 <th>Available</th>
                 <th>Actions</th>
             </tr>
@@ -29,10 +30,16 @@
                     <td><%= vehicle.mileage.toLocaleString() %> miles</td>
                     <td><%= vehicle.category %></td>
                     <td><%= vehicle.available ? "Yes" : "No" %></td>
+                    <td>
+                        <a href="/admin/vehicles/<%= vehicle.vehicle_id %>/edit" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="/admin/vehicles/<%= vehicle.vehicle_id %>/delete" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             <% }) %>
         </tbody>
     </table>
 </div>
 
-<%- include("../partials/footer") %>
+<%- include("../../partials/footer") %>

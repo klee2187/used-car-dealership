@@ -34,6 +34,7 @@ export const getUserByEmail = async (email) => {
 
 // Create new user (registration)
 export const createUser = async ({ first_name, last_name, email, username, password_hash, role = "customer"}) => {
+
     try {
         const result = await db.query(
             `INSERT INTO users (first_name, last_name, email, username, password_hash, role)
@@ -62,4 +63,35 @@ export const getUserById = async ({ user_id }) => {
         throw error;
     }
 }
+
+export const updateUser = async ({ userId, first_name, last_name, email, username, role }) => {
+    try {
+        const result = await db.query(
+            `UPDATE users
+            SET first_name = $1, last_name = $2, email = $3, username = $4, role = $5
+            WHERE user_id = $6
+            RETURNING user_id, first_name, last_name, email, username, role`,
+            [first_name, last_name, email, username, role, userId]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error, could not update user:", error);
+        throw error;
+    }
+}
+
+export const deleteUser = async (userId) => {
+    try {
+        const result = await db.query(
+            `DELETE FROM users
+            WHERE user_id = $1
+            RETURNING user_id, first_name, last_name, email, username, role`,
+            [userId]
+        );
+        return result.rows[0];
+    } catch (error) {
+        console.error("Error, could not delete user:", error);
+        throw error;
+    }
+};
 

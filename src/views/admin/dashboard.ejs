@@ -5,23 +5,20 @@
 <div class="admin-dashboard">
 
     <h1>Admin Dashboard</h1>
-    <p>Welcome, <%= user.name %>!</p>
+    <p>Welcome, <%= user.first_name %>!</p>
 
     <div class="admin-grid">
 
-        <a href="/admin/users" class="admin-link">
+        <a href="/admin/users/" class="admin-link">
             <h2>Manage Users></h2>
             <p>View and manage all registered users and roles.</p>
         </a>
 
-        <a href="/admin/vehicles" class="admin-link">
+        <a href="/admin/manageVehicles" class="admin-link">
             <h2>Manage Vehicles></h2>
             <p>View and manage all vehicles in the inventory.</p>
         </a>
-        <a href="/admin/categories" class="admin-link">
-            <h2>Manage Categories></h2>
-            <p>View and manage all vehicle categories.</p>
-        </a>
+
         <a href="/admin/requests" class="admin-link">
             <h2>Manage Requests></h2>
             <p>View and manage all user requests.</p>

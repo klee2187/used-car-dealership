@@ -1,0 +1,52 @@
+<%-include("../../partials/head", { title: "Manage Vehicles", pageStyles: "admin" }) %>
+<%- include("../../partials/header") %>
+<%- include("../../partials/flash") %>
+
+<div class="admin-container">
+    <h1>Add New Vehicle</h1>
+
+    <form action="/admin/vehicles/new" method="POST" class="form">
+
+        <label>Category</label>
+        <select name="categoryId" required>
+            <% categories.forEach(category => { %>
+                <option value="<%= category.id %>"><%= category.name %></option>
+            <% }) %>
+        </select>
+
+        <label>Make</label>
+        <input type="text" name="make" required>
+
+        <label>Model</label>
+        <input type="text" name="model" required>
+
+        <label>Year</label>
+        <input type="number" name="year" required>
+
+        <label>Slug</label>
+        <input type="text" name="slug" required>
+
+        <label>Price</label>
+        <input type="number" name="price" step="0.01" required>
+
+        <label>Mileage</label>
+        <input type="number" name="mileage" required>
+
+        <label>Description</label>
+        <textarea name="description" required></textarea>
+
+        <label>Image URL</label>
+        <input type="text" name="image_url">
+
+        <label>Available</label>
+        <select name="available" required>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Add Vehicle</button>
+
+    </form>
+</div>
+
+<%- include("../../partials/footer") %>

@@ -2,13 +2,14 @@
 import { Router } from "express";
 import { showCategories, showCategoryBySlug } from "./categories/categories.js";
 import { showAllVehicles,  showVehicleBySlug } from "./vehicles/vehicles.js";
-import { showProfile } from "./profile/profile.js";
+import { showProfile, updateProfile } from "./profile/profile.js";
 import { isAdmin } from "../middleware/role.js";
-import { showAllUsers, showAdminDashboard } from "./admin/admin.js";
+import { showAllUsers, showAdminDashboard, showEditUserForm, showCreateUserForm, createUserPage, updateUserPage, deleteUserPage } from "./admin/admin.js";
 import { requireLogin } from "../middleware/auth.js";
 import { showRegistrationForm, registerUser, registerValidation } from "./forms/register.js";
 import { loginValidation, showLoginForm, loginUser, logoutUser  } from "./forms/login.js";
 import contactRoutes from "./forms/contact.js";
+import { showManageVehicles, createVehiclePage, updateVehiclePage, deleteVehiclePage, showAddVehicleForm, showEditVehicleForm } from "./admin/manageVehicles.js";
 
 //------------Initialize Router------------
 const router = Router();
@@ -30,10 +31,29 @@ router.get("/vehicles", showAllVehicles);
 router.get("/vehicles/:slug", showVehicleBySlug);
 
 //------------Admin routes------------
-router.get("/admin/users", requireLogin, isAdmin, showAllUsers);
 router.get("/admin/dashboard", requireLogin, isAdmin, showAdminDashboard);
-router.post("/admin/users/update", requireLogin, isAdmin, showAllUsers);
-router.post("/admin/users/delete", requireLogin, isAdmin, showAllUsers);
+
+router.get("/admin/users/", requireLogin, isAdmin, showAllUsers);
+
+router.get("/admin/users/:id/edit", requireLogin, isAdmin, showEditUserForm);
+router.post("/admin/users/:id/edit", requireLogin, isAdmin, updateUserPage);
+
+router.post("/admin/users/:id/delete", requireLogin, isAdmin, deleteUserPage);
+
+router.get("/admin/users/new", requireLogin, isAdmin, showCreateUserForm);
+router.post("/admin/users/new", requireLogin, isAdmin, createUserPage);
+
+router.get("/admin/manageVehicles", requireLogin, isAdmin, showManageVehicles);
+
+router.get("/vehicles/new", requireLogin, isAdmin, createVehiclePage);
+router.post("/vehicles/new", requireLogin, isAdmin, createVehiclePage);
+router.get("/admin/vehicles/new", requireLogin, isAdmin, showAddVehicleForm);
+
+router.get("/vehicles/:id/edit", requireLogin, isAdmin, updateVehiclePage);
+router.post("/vehicles/:id/edit", requireLogin, isAdmin, updateVehiclePage);
+router.get("/admin/vehicles/:id/edit", requireLogin, isAdmin, showEditVehicleForm);
+
+router.post("/vehicles/:id/manageVehicles", requireLogin, isAdmin, deleteVehiclePage);
 
 //------------Employee routes------------
 router.get("/employee/dashboard", requireLogin, (req, res) => {
@@ -54,6 +74,7 @@ router.post("/login", loginValidation, loginUser);
 
 router.get("/logout", logoutUser);
 router.get("/profile", requireLogin, showProfile);
+router.post("/profile", requireLogin, updateProfile);
 
 //------------Form Routes------------
 router.use("/contact", contactRoutes);

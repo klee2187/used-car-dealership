@@ -3,7 +3,7 @@ import { body, validationResult } from "express-validator";
 import { addVehicleReview, getVehicleReviews } from "../../models/forms/review.js";
 import { getVehicleBySlug } from "../../models/vehicle/Vehicle";
 
-export const router = Router();
+const router = Router();
 
 // Validation rules for review form
 export const reviewValidation = [
@@ -84,3 +84,5 @@ export const createReview = async (req, res) => {
 
 router.get("/:slug", showReviewForm);
 router.post("/:slug", reviewValidation, createReview);
+
+export default router;
