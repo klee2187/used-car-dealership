@@ -1,14 +1,14 @@
 import db from "../db.js";
 
 // Creat a new contact message
-export const newContactMessage = async ({ subject, message, userId = null }) => {
+export const newContactMessage = async ({ name, email, subject, message, userId = null }) => {
 
     try{
         const query = await db.query(
-            `INSERT INTO contact_messages (subject, message, user_id)
-            VALUES ($1, $2, $3)
+            `INSERT INTO contact_messages (name, email, subject, message, user_id)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING *`,
-            [subject, message, userId]
+            [name, email, subject, message, userId]
         );
         const result = query.rows[0];
         return result;
