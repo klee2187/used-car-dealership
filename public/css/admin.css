@@ -1,0 +1,202 @@
+/* Universal admin styles */
+
+.admin-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+
+
+    h1 {
+        text-align: center;
+        color: #ffffff;
+        margin-bottom: 2rem;
+        font-size: 2rem;
+    }
+
+    p {
+        text-align: center;
+        color: #ccc;
+        margin-bottom: 1rem;
+    }
+
+    /* Table Styles */
+    .messages-table,
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        border-radius: 8px;
+        overflow: hidden;
+
+        thead {
+            background: #000000;
+
+            th {
+                padding: 1rem;
+                text-align: left;
+                color: #ffffff;
+                font-weight: bold;
+                font-size: 1rem;
+                line-height: 2rem;
+            }
+        }
+
+        tbody {
+            tr {
+                border-bottom: 1px solid #333;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                td {
+                    padding: 0.75rem 1rem;
+                    color: #2c2c2c;
+                    vertical-align: top;
+                }
+            }
+        }
+    }
+
+    /* Buttons*/
+    .btn {
+        display: inline-block;
+        padding: 0.6rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.2s ease;
+
+        &.btn-primary {
+            background: #00d400;
+            color: #000;
+
+            &:hover {
+                background: lighten(#00d400, 10%);
+                transform: translateY(-2px);
+            }
+        }
+
+        &.btn-danger {
+            background: #00d400;
+            color: white;
+
+            &:hover {
+                background: #0d6121;
+                transform: translateY(-2px);
+            }
+        }
+
+        &.btn-sm {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
+        }
+    }
+
+    /* Forms inside admin pages */
+    form {
+        display: inline-block;
+
+        button {
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+
+            &.btn-danger {
+                background: #00d400;
+                color: white;
+
+                &:hover {
+                    background: #0d6121;
+                    transform: translateY(-2px);
+                }
+            }
+        }
+    }
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .admin-container {
+        padding: 1rem;
+
+        table {
+            font-size: 0.85rem;
+        }
+
+        .btn {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+    }
+}
+
+/* Admin Dashboard */
+
+.admin-dashboard {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    color: #373737;
+
+    h1 {
+        text-align: center;
+        color: #ffffff;
+        margin-bottom: 1rem;
+        font-size: 2.2rem;
+    }
+
+    p {
+        text-align: center;
+        color: #353535;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    /* Grid of dashboard cards */
+    .admin-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+
+        .admin-link {
+            display: block;
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #313131;
+            box-shadow: 0 0 12px rgba(0,0,0,0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+            h2 {
+                margin: 0 0 0.5rem;
+                color: #00d400;
+                font-size: 1.4rem;
+            }
+
+            &:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0 18px rgba(0, 212, 0, 0.4);
+            }
+        }
+
+        p {
+            margin-top: -1rem;
+            padding: 0 1rem 1rem;
+            color: #2d2d2d;
+            font-size: 0.95rem;
+        }
+    }
+}

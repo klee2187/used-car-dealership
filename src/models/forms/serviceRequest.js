@@ -1,15 +1,17 @@
-import db from "./db.js";
+import db from "../db.js";
 
 // Create a new service request
 export const newServiceRequest = async ({ userId, vehicleId, status, description, created_at }) => {
     try {
-        const result = await db.query(
+        const query = await db.query(
             `INSERT INTO service_requests (user_id, vehicle_id, status, description, created_at)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *`,
             [userId, vehicleId, status, description, created_at]
         );
-        return result.rows[0];
+
+        const result = query.rows[0];
+        return result;
 
     } catch (error) {
         console.error("Error, could not create service request:", error);
@@ -20,14 +22,16 @@ export const newServiceRequest = async ({ userId, vehicleId, status, description
 // Update service request status and internal notes (for admin use)
 export const updateServiceRequest = async ({ status, internalNotes, requestId, updated_at }) => {
     try {
-        const result = await db.query(
+        const query = await db.query(
             `UPDATE service_requests
             SET status = $1, internal_notes = $2, updated_at = $4
             WHERE request_id = $3
             RETURNING *`,
             [status, internalNotes, requestId, updated_at]
         );
-        return result.rows[0];
+
+        const result = query.rows[0];
+        return result;
 
     } catch (error) {
         console.error("Error, could not update service request:", error);
@@ -38,7 +42,7 @@ export const updateServiceRequest = async ({ status, internalNotes, requestId, u
 // Get all service requests for a user
 export const getUserServiceRequests = async (userId) => {
     try {
-        const result = await db.query(
+        const query = await db.query(
             `SELECT sr.*, v.make, v.model, v.year
             FROM service_requests sr
             LEFT JOIN vehicles v ON sr.vehicle_id = v.vehicle_id
@@ -46,10 +50,30 @@ export const getUserServiceRequests = async (userId) => {
             ORDER BY sr.created_at DESC`,
             [userId]
         );
-        return result.rows;
+        return query.rows;
 
     } catch (error) {
         console.error("Error, could not get service requests for user:", error);
         throw error;    
      }
+}
+
+// GET all service requests (for admin view)
+export const getAllServiceRequests = async () => {
+    try {
+        const query = await db.query(
+            `SELECT sr.*, u.first_name, u.last_name, v.make, v.model, v.year
+            FROM service_requests sr
+            LEFT JOIN users u ON sr.user_id = u.user_id
+            LEFT JOIN vehicles v ON sr.vehicle_id = v.vehicle_id
+            ORDER BY sr.created_at DESC`
+        );
+
+        const result = query.rows;
+        return result;
+
+    } catch (error) {
+        console.error("Error, could not get all service requests:", error);
+        throw error;    
+    }
 }

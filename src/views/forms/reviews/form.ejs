@@ -1,42 +1,23 @@
-<%- include("../../partials/head", { title: "Rate Us" }) %>
+<%- include("../../partials/head", { title: "Rate Us", pageStyles: "forms" }) %>
 <%- include("../../partials/header", { title: "Say Your Piece" }) %>
 <%- include("../../partials/flash") %>
 
 <div class="form-container">
     <h1>Pick apart <%= vehicle.make %> <%= vehicle.model %></h1>
 
-    <form action="/review/<%= vehicle.vehicle_id %>" method="POST" class="form">
+    <form action="/reviews/<%= vehicle.slug %>" method="POST" class="form">
 
         <!-- Star Rating -->
         <label>Rate Us</label>
         <div class="star-rating">
             <% for (let i = 5; i >= 1; i--) { %>
                 <input type="radio" id="star<%= i %>" name="rating" value="<%= i %>" required>
-                <label for="star<%= i %>">&#9733;</label>
+                <label for="star<%= i %>">☆</label>
             <% } %>
         </div>
 
-        <label for="comment" class="form-label">What did we do this time?</label>
+        <label for="comment" class="form-label">What do you think about this car? </label>
         <textarea name="comment" id="comment" required></textarea>
-
-        <!-- Name Options -->
-        <h3>What name should we display for all to see?</h3>
-
-        <% if (user) { %>
-            <label>
-               <input type="radio" name="name_option" value="full" checked>
-               <%= user.first_name %> <%= user.last_name %>
-            </label>
-            <label>
-               <input type="radio" name="name_option" value="first">
-               <%= user.first_name %> only
-            </label>
-        <% } %>
-
-        <label>
-            <input type ="radio" name="name_option" value="anonymous" <%= user ? "" : "checked" %>>
-            Anonymous
-        </label>
 
         <!-- Hidden Vehicle ID -->
         <input type="hidden" name="vehicle_id" value="<%= vehicle.vehicle_id %>">

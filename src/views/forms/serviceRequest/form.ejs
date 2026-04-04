@@ -1,17 +1,11 @@
-<%- include("../../partials/head", {title: "Service Request"} ) %>
-<%- include("../../partials/header", {title: "Service Form"} ) %>
-<% include("../../partials/flash") %>
+<%- include("../../partials/head", {title: "Service Request", pageStyles: "forms" }) %>
+<%- include("../../partials/header") %>
+<%- include("../../partials/flash") %>
 
 <div class="form-container">
     <h1>Request Service for <%= vehicle.make %> <%= vehicle.model %></h1>
 
-    <form action="/service-request/<%= vehicl.slug %>" method="POST" class="form">
-    
-        <label for="customerName" class="form-label">Customer Name</label>
-        <input type="text" name="customerName" id="customerName" required>
-    
-        <label for="customerEmail" class="form-label">Customer Email</label>
-        <input type="email" name="customerEmail" id="customerEmail" required>
+    <form action="/serviceRequest/form/<%= vehicle.slug %>" method="POST" class="form">
     
         <label for="description">Describe what ails your vehicle</label>
         <textarea name="description" id="description" rows="4" required></textarea>

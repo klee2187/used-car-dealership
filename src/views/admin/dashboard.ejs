@@ -1,37 +1,42 @@
-<%- include("../partials/head", {title: "Admin Dashboard", pageStyles: "admin"}) %>
+<%- include("../partials/head", { title: user?.role === "employee" ? "Employee Dashboard" : "Admin Dashboard", pageStyles: "admin" }) %>
 <%- include("../partials/header") %>
 <%- include("../partials/flash") %>
 
 <div class="admin-dashboard">
+    <% if (!user || (user.role !== "admin" && user.role !== "employee")) { %>
+        <h1>Access Denied</h1>
+        <p>You do not have permission to access this page.</p>
+    <% } else { %>
+        <h1><%= user.role === "employee" ? "Employee Dashboard" : "Admin Dashboard" %></h1>
+        <p>Welcome, <%= user.first_name %>!</p>
 
-    <h1>Admin Dashboard</h1>
-    <p>Welcome, <%= user.first_name %>!</p>
+        <div class="admin-grid">
+            <a href="/admin/users/" class="admin-link">
+                <h2>Manage Users</h2>
+            </a>
+            <p>View and manage registered users and roles.</p>
 
-    <div class="admin-grid">
+            <a href="/admin/manageVehicles" class="admin-link">
+                <h2>Manage Vehicles</h2>
+            </a>
+            <p>View and manage vehicles in the inventory.</p>
 
-        <a href="/admin/users/" class="admin-link">
-            <h2>Manage Users></h2>
-            <p>View and manage all registered users and roles.</p>
-        </a>
+            <a href="/admin/manageRequests" class="admin-link">
+                <h2>Manage Requests</h2>
+            </a>
+            <p>View and manage service requests.</p>
 
-        <a href="/admin/manageVehicles" class="admin-link">
-            <h2>Manage Vehicles></h2>
-            <p>View and manage all vehicles in the inventory.</p>
-        </a>
-
-        <a href="/admin/requests" class="admin-link">
-            <h2>Manage Requests></h2>
-            <p>View and manage all user requests.</p>
-        </a>
-        <a href="/admin/messages" class="admin-link">
-            <h2>Check Messages></h2>
-            <p>View and manage all user messages.</p>
-        </a>
-        <a href="/admin/reviews" class="admin-link">
-            <h2>Moderate Reviews></h2>
-            <p>View and manage all user reviews.</p>
-        </a>
-    </div>
+            <a href="/admin/manageMessages" class="admin-link">
+                <h2>Check Messages</h2>
+            </a>
+            <p>View contact form messages.</p>
+            
+            <a href="/admin/manageReviews" class="admin-link">
+                <h2>Manage Reviews</h2>
+            </a>
+            <p>View and manage customer reviews.</p>
+        </div>
+    <% } %>
 </div>
 
 <%- include("../partials/footer") %>

@@ -1,0 +1,63 @@
+<%- include('../partials/head', { title: 'Service Requests', pageStyles: 'admin' }) %>
+<%- include('../partials/header') %>
+<%- include('../partials/flash') %>
+
+<div class="admin-container">
+
+    <h1>Service Requests</h1>
+
+    <% if (serviceRequests.length === 0) { %>
+        <p>No service requests found.</p>
+    <% } else { %>
+
+        <table class="service-requests-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Vehicle</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Internal Notes</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% serviceRequests.forEach(request => { %>
+                    <tr>
+                        <td><%= request.first_name %> <%= request.last_name %></td>
+
+                        <td>
+                            <% if (request.vehicle_id) { %>
+                                <%= request.year %> <%= request.make %> <%= request.model %>
+                            <% } else { %>
+                                No vehicle selected
+                            <% } %>
+                        </td>
+
+                        <td><%= request.description %></td>
+
+                        <td>
+                            <form id="update-form-<%= request.request_id %>" action="/admin/manageRequests/<%= request.request_id %>/status" method="POST">
+                                <select name="status">
+                                    <option value="submitted" <%= request.status === 'submitted' ? 'selected' : '' %>>Submitted</option>
+                                    <option value="in_progress" <%= request.status === 'in_progress' ? 'selected' : '' %>>In Progress</option>
+                                    <option value="completed" <%= request.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                                </select>
+                        </td>
+
+                        <td>
+                                <textarea name="internal_notes" rows="2"><%= request.internal_notes || "" %></textarea>
+                        </td>
+
+                        <td>
+                            <button type="submit" form="update-form-<%= request.request_id %>">Save Notes</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</div>
+
+<%- include('../partials/footer') %>

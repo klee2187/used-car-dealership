@@ -1,0 +1,42 @@
+<%- include("../partials/head", {title: "Manage Reviews", pageStyles: "admin"} ) %>
+<%- include("../partials/header") %>
+<%- include("../partials/flash") %>
+
+<div class="admin-container">
+
+    <h1>Manage Customer Reviews</h1>
+
+    <% if (reviews.length === 0) { %>
+        <p class="no-reviews">No reviews found.</p>
+    <% } else { %>
+
+        <table class="table reviews-table">
+            <thead>
+                <tr>
+                    <th>Vehicle</th>
+                    <th>Reviewer</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% reviews.forEach(review => { %>
+                    <tr>
+                        <td><%= review.year %> <%= review.make %> <%= review.model %></td>
+                        <td><%= review.username %></td>
+                        <td><%= review.rating %> ★</td>
+                        <td><%= review.comment %></td>
+                        <td><%= new Date(review.created_at).toLocaleDateString() %></td>
+                        <td>
+                            <form action="/admin/manageReviews/<%= review.review_id %>/delete" method="POST">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</div>

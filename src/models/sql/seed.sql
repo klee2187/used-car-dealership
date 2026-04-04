@@ -104,6 +104,17 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
+--Create contact_responses table
+CREATE TABLE IF NOT EXISTS contact_responses (
+    response_id SERIAL PRIMARY KEY,
+    message_id INT NOT NULL REFERENCES contact_messages(message_id) ON DELETE CASCADE,
+    employee_id INT NOT NULL REFERENCES users(user_id) ON DELETE SET NULL,
+    response TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (message_id) REFERENCES contact_messages(message_id),
+    FOREIGN KEY (employee_id) REFERENCES users(user_id)
+);
+
 
 -- Insert users
 INSERT INTO users (first_name, last_name, email, username, password_hash, role)

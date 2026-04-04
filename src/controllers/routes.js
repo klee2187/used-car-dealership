@@ -1,14 +1,20 @@
 //------------Import dependencies and controllers------------
 import { Router } from "express";
+import { showAdminDashboard } from "./admin/admin.js";
+import { requireLogin } from "../middleware/auth.js";
+import { isAdmin, isEmployee } from "../middleware/role.js";
+import contactRoutes from "./forms/contact.js";
+import serviceRequestRoutes from "./forms/serviceRequest.js";
+import reviewRoutes from "./forms/review.js";
 import { showCategories, showCategoryBySlug } from "./categories/categories.js";
 import { showAllVehicles,  showVehicleBySlug } from "./vehicles/vehicles.js";
 import { showProfile, updateProfile } from "./profile/profile.js";
-import { isAdmin } from "../middleware/role.js";
-import { showAllUsers, showAdminDashboard, showEditUserForm, showCreateUserForm, createUserPage, updateUserPage, deleteUserPage } from "./admin/admin.js";
-import { requireLogin } from "../middleware/auth.js";
+import { showAllReviews, deleteReview } from "./admin/manageReviews.js";
 import { showRegistrationForm, registerUser, registerValidation } from "./forms/register.js";
 import { loginValidation, showLoginForm, loginUser, logoutUser  } from "./forms/login.js";
-import contactRoutes from "./forms/contact.js";
+import { showUserMessages,  } from "./admin/manageMessages.js";
+import { showAllServiceRequests, updateRequestStatus } from "./admin/manageRequests.js";
+import { showAllUsers, showEditUserForm, showCreateUserForm, createUserPage, updateUserPage, deleteUserPage } from "./admin/manageUsers.js";
 import { showManageVehicles, createVehiclePage, updateVehiclePage, deleteVehiclePage, showAddVehicleForm, showEditVehicleForm } from "./admin/manageVehicles.js";
 
 //------------Initialize Router------------
@@ -31,9 +37,10 @@ router.get("/vehicles", showAllVehicles);
 router.get("/vehicles/:slug", showVehicleBySlug);
 
 //------------Admin routes------------
-router.get("/admin/dashboard", requireLogin, isAdmin, showAdminDashboard);
+router.get("/admin/dashboard", requireLogin, isEmployee, showAdminDashboard);
+router.get("/employee/dashboard", requireLogin, isEmployee, showAdminDashboard);
 
-router.get("/admin/users/", requireLogin, isAdmin, showAllUsers);
+router.get("/admin/users/", requireLogin, isEmployee, showAllUsers);
 
 router.get("/admin/users/:id/edit", requireLogin, isAdmin, showEditUserForm);
 router.post("/admin/users/:id/edit", requireLogin, isAdmin, updateUserPage);
@@ -43,27 +50,38 @@ router.post("/admin/users/:id/delete", requireLogin, isAdmin, deleteUserPage);
 router.get("/admin/users/new", requireLogin, isAdmin, showCreateUserForm);
 router.post("/admin/users/new", requireLogin, isAdmin, createUserPage);
 
-router.get("/admin/manageVehicles", requireLogin, isAdmin, showManageVehicles);
+router.get("/admin/manageVehicles", requireLogin, isEmployee, showManageVehicles);
 
-router.get("/vehicles/new", requireLogin, isAdmin, createVehiclePage);
-router.post("/vehicles/new", requireLogin, isAdmin, createVehiclePage);
 router.get("/admin/vehicles/new", requireLogin, isAdmin, showAddVehicleForm);
+router.post("/admin/vehicles/new", requireLogin, isAdmin, createVehiclePage);
 
-router.get("/vehicles/:id/edit", requireLogin, isAdmin, updateVehiclePage);
-router.post("/vehicles/:id/edit", requireLogin, isAdmin, updateVehiclePage);
 router.get("/admin/vehicles/:id/edit", requireLogin, isAdmin, showEditVehicleForm);
+router.post("/admin/vehicles/:id/edit", requireLogin, isAdmin, updateVehiclePage);
 
-router.post("/vehicles/:id/manageVehicles", requireLogin, isAdmin, deleteVehiclePage);
+router.post("/admin/vehicles/:id/delete", requireLogin, isAdmin, deleteVehiclePage);
 
-//------------Employee routes------------
-router.get("/employee/dashboard", requireLogin, (req, res) => {
-    if (req.session.user.role === "employee") {
-        res.render("employee/dashboard", { title: "Employee Dashboard" });
-    } else {
-        req.flash("error", "Access denied. Employees only.");
-        res.redirect("/");
+router.get("/admin/manageMessages", requireLogin, isEmployee, showUserMessages);
+router.get("/admin/messages", requireLogin, isEmployee, showUserMessages);
+router.post("/admin/manageMessages/:id/delete", requireLogin, isAdmin, async (req, res) => {
+    if (req.session.user.role !== "admin") {
+        req.flash("error", "You must be an admin to delete messages.");
+        return res.redirect("/admin/manageMessages");
     }
 });
+router.post("/admin/manageMessages/:id/reply", requireLogin, isAdmin, async (req, res) => {
+    if (req.session.user.role !== "admin") {
+        req.flash("error", "You must be an admin to reply to messages.");
+        return res.redirect("/admin/manageMessages");
+    }
+});
+
+router.get("/admin/manageRequests", requireLogin, isEmployee, showAllServiceRequests);
+router.get("/admin/requests", requireLogin, isEmployee, showAllServiceRequests);
+router.post("/admin/manageRequests/:id/status", requireLogin, isEmployee, updateRequestStatus);
+router.post("/admin/requests/:id/status", requireLogin, isEmployee, updateRequestStatus);
+
+router.get("/admin/manageReviews", requireLogin, isEmployee, showAllReviews);
+router.post("/admin/manageReviews/:id/delete", requireLogin, isAdmin, deleteReview);
 
 //------------User routes------------
 router.get("/register", showRegistrationForm);
@@ -78,6 +96,8 @@ router.post("/profile", requireLogin, updateProfile);
 
 //------------Form Routes------------
 router.use("/contact", contactRoutes);
+router.use("/serviceRequest", requireLogin, serviceRequestRoutes);
+router.use("/reviews", requireLogin, reviewRoutes);
 
 //------------Error handling middleware------------
 router.use((req, res) => {

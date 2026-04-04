@@ -2,6 +2,7 @@ import db from '../../models/db.js';
 
 // Get all categories
 export const getAllCategories = async () => {
+
     try {
         const result = await db.query(`
             SELECT 
@@ -16,6 +17,7 @@ export const getAllCategories = async () => {
             ORDER BY c.name ASC
         `);
         return result.rows;
+
     } catch (error) {
         console.error('Error, could not get all categories:', error);
         throw error;
@@ -24,8 +26,9 @@ export const getAllCategories = async () => {
 
 // Get a category by slug
 export const getCategoryBySlug = async (slug) => {
+
     try {
-        const result = await db.query(`
+        const query = await db.query(`
             SELECT
                 c.category_id,
                 c.name,
@@ -39,7 +42,9 @@ export const getCategoryBySlug = async (slug) => {
             ORDER BY c.name ASC
             `, [slug]);
             
-            return result.rows[0] || null;
+            const result = query.rows[0] || null;
+            return result;
+
     } catch (error) {
         console.error("Error, Could not get category by slug:", error);
         throw error;
@@ -48,8 +53,9 @@ export const getCategoryBySlug = async (slug) => {
 
 // Get a single category by id   
 export const getCategoryById = async (id) => {
+
     try {
-        const result = await db.query( `
+        const query = await db.query( `
             SELECT 
                 c.category_id, 
                 c.name, 
@@ -61,8 +67,9 @@ export const getCategoryById = async (id) => {
             WHERE c.category_id = $1
             GROUP BY c.category_id
             `, [id]);  
-
-        return result.rows[0] || null; 
+        
+        const result = query.rows[0] || null;
+        return result;
     } catch (error) {
         console.error('Error, could not get category by ID:', error);
         throw error;

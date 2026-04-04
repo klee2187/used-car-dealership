@@ -2,8 +2,9 @@ import db from "../../models/db.js";
 
 // Get all vehicles
 export const getAllVehicles = async () => {
+
     try {
-        const result = await db.query(`
+        const query = await db.query(`
             SELECT 
                 v.vehicle_id,
                 v.category_id, 
@@ -22,7 +23,9 @@ export const getAllVehicles = async () => {
             ORDER BY v.created_at DESC
         `);
 
-        return result.rows;
+        const result = query.rows;
+        return result;
+
     } catch (error) {
         console.error("Error, could not get all vehicles:", error);
         throw error;
@@ -31,8 +34,9 @@ export const getAllVehicles = async () => {
 
 // Get a vehicle by slug
 export const getVehicleBySlug = async (slug) => {
+    
     try {
-        const result = await db.query(`
+        const query = await db.query(`
             SELECT 
                 v.vehicle_id,
                 v.category_id, 
@@ -51,7 +55,9 @@ export const getVehicleBySlug = async (slug) => {
             WHERE v.slug = $1
         `, [slug]);
             
-        return result.rows[0] || null;
+        const result = query.rows[0] || null;
+        return result;
+
     } catch (error) {
         console.error("Error, Could not get vehicle by slug:", error);
         throw error;
@@ -61,7 +67,7 @@ export const getVehicleBySlug = async (slug) => {
 // Get vehicles by category ID   
 export const getVehiclesByCategoryId = async (categoryId) => {
     try {
-        const result = await db.query(`
+        const query = await db.query(`
             SELECT 
                 v.vehicle_id,
                 v.category_id,
@@ -81,7 +87,9 @@ export const getVehiclesByCategoryId = async (categoryId) => {
             ORDER BY v.year DESC
         `, [categoryId]);  
 
-        return result.rows || []; 
+        const result = query.rows || [];
+        return result;
+
     } catch (error) {
         console.error("Error, could not get vehicles by category:", error);
         throw error;
@@ -92,7 +100,7 @@ export const getVehiclesByCategoryId = async (categoryId) => {
 // Get a single vehicle by id   
 export const getVehicleById = async (id) => {
     try {
-        const result = await db.query(`
+        const query = await db.query(`
             SELECT 
                 v.vehicle_id,
                 v.category_id, 
@@ -111,7 +119,9 @@ export const getVehicleById = async (id) => {
             WHERE v.vehicle_id = $1
         `, [id]);  
 
-        return result.rows[0] || null; 
+        const result = query.rows[0] || null;
+        return result;
+
     } catch (error) {
         console.error("Error, could not get vehicle by ID:", error);
         throw error;
@@ -120,7 +130,7 @@ export const getVehicleById = async (id) => {
 
 export const createVehicle = async ({ categoryId, make, model, year, slug, price, mileage, description, isAvailable }) => {
     try {
-        const result = await db.query(
+        const query = await db.query(
             `INSERT INTO vehicles (
             category_id, 
             make, 
@@ -135,7 +145,9 @@ export const createVehicle = async ({ categoryId, make, model, year, slug, price
             RETURNING *`, [categoryId, make, model, year, slug, price, mileage, description, isAvailable]
         );
 
-        return result.rows[0];
+        const result = query.rows[0];
+        return result;
+
     } catch (error) {
         console.error("Error, could not create vehicle:", error);
         throw error;
@@ -143,8 +155,9 @@ export const createVehicle = async ({ categoryId, make, model, year, slug, price
 }
 
 export const updateVehicle = async ({ categoryId, make, model, year, slug, price, mileage, description, isAvailable, vehicleId }) => {
+
     try {
-        const result = await db.query( 
+        const query = await db.query( 
             `UPDATE vehicles
             SET category_id = $1, 
                 make = $2,
@@ -158,7 +171,10 @@ export const updateVehicle = async ({ categoryId, make, model, year, slug, price
             WHERE vehicle_id = $10
             RETURNING *`, [categoryId, make, model, year, slug, price, mileage, description, isAvailable, vehicleId]
         );
-        return result.rows[0];
+
+        const result = query.rows[0];
+        return result;
+        
     } catch (error) {
         console.error("Error, could not update vehicle:", error);
         throw error;
@@ -167,12 +183,15 @@ export const updateVehicle = async ({ categoryId, make, model, year, slug, price
 
 export const deleteVehicle = async (vehicleId) => {
     try {
-        const result = await db.query(
+        const query = await db.query(
             `DELETE FROM vehicles   
             WHERE vehicle_id = $1
             RETURNING *`, [vehicleId]
         );
-        return result.rows[0];
+        
+        const result = query.rows[0];
+        return result;
+
     } catch (error) {
         console.error("Error, could not delete vehicle:", error);
         throw error;
@@ -202,9 +221,10 @@ export const getFilteredVehicles = async (identifier, identifierType = 'slug', s
         ORDER BY ${orderByClause}
     `;
     
-    const result = await db.query(query, [identifier]);
+    const queryResult = await db.query(query, [identifier]);
+    const result = queryResult.rows;
     
-    return result.rows.map(section => ({
+    return result.map(section => ({
         id: section.vehicle_id,
         categoryId: section.category_id,
         make: section.make,

@@ -1,67 +1,61 @@
-<%- include ("../partials/head", { title: `${vehicle.make} ${vehicle.model} Details`, pageStyles: "vehicle-detail" }) %>
+<%- include("../partials/head", { title: `${vehicle.make} ${vehicle.model} Details`, pageStyles: "vehicles" }) %>
 <%- include("../partials/header") %>
 <%- include("../partials/flash") %>
 
 <div class="vehicle-detail-container">
-
     <h1><%= vehicle.year %> <%= vehicle.make %> <%= vehicle.model %></h1>
 
-    <div class="vehicle-info">
-        <p class="category">Category: <%=category ? category.name : "Uncategorized" %></p>
-    </div>
-
-    <div class="vehicle-image">
-        <img src="<%= vehicle.image_url %>" alt="<%= vehicle.make %> <%= vehicle.model %>">
-    </div>
     <div class="vehicle-main">
         <div class="vehicle-img">
-            <% if (vehicle.image_url) { %>
-                <img src="<%= vehicle.image_url %>" alt="<%= vehicle.make %> <%= vehicle.model %>">
-            <% } %>
+            <img src="<%= vehicle.image_url || '/images/default-car.jpg' %>" alt="<%= vehicle.make %> <%= vehicle.model %>">
         </div>
 
         <div class="vehicle-info">
             <ul>
-                <li><p><strong>Price:</strong> $<%= vehicle.price.toLocaleString() %></p></li>
-                <li><p><strong>Mileage:</strong> <%= vehicle.mileage.toLocaleString() %> miles</p></li>
-                <li><p><strong>Category:</strong> <%= category ? category.name : "Uncategorized" %></p></li>
-                <li><p><strong>Availability:</strong> <%= vehicle.is_available ? "Available" : "Sold" %></p></li>
+                <li><strong>Price:</strong> $<%= Number(vehicle.price).toLocaleString() %></li>
+                <li><strong>Mileage:</strong> <%= Number(vehicle.mileage).toLocaleString() %> miles</li>
+                <li><strong>Category:</strong> <%= category ? category.name : "Uncategorized" %></li>
+                <li><strong>Availability:</strong> <%= vehicle.is_available ? "Available" : "Sold" %></li>
             </ul>
 
             <h3>Description</h3>
-            <p><%= vehicle.description %></p>
+            <p><%= vehicle.description || "No description available." %></p>
 
-            <a href="/vehicles/<%= vehicle.slug %>/edit" class="btn btn-primary">Back to Inventory</a>
+            <p>
+                <a href="/vehicles" class="btn btn-primary">Back to Inventory</a>
+            </p>
+            <p>
+                <a href="/serviceRequest/form/<%= vehicle.slug %>" class="btn btn-primary">Request Service</a>
+                <a href="/reviews/<%= vehicle.slug %>" class="btn btn-secondary">Leave a Review</a>
+            </p>
         </div>
     </div>
+
     <div class="vehicle-reviews">
         <h2>Vehicle Reviews</h2>
-
-        <% if (reviews && reviews.length > 0) { %>
-            <p class="no-reviews">There are no reviews yet, but you can be the lucky one to leave one first.</p>
-        <% } else { %>
-            <p><a href="#review-form" class="btn btn-primary">Leave a Review</a></p>
-        <% } %>
-
-        <% reviews.forEach(review => { %>
-            <div class="review-card">
-                <div class="review-stars">
-                    <% for (let i = 1; i <= 5; i++) { %>
-                        <% if (i <= review.rating) { %>
-                            <span class="star filled">&#9733;</span>
-                        <% } else { %>
-                            <span class="star">&#9733;</span>
+        <% const vehicleReviews = Array.isArray(typeof reviews !== "undefined" ? reviews : null) ? reviews : []; %>
+        <% if (vehicleReviews.length > 0) { %>
+            <% vehicleReviews.forEach(review => { %>
+                <div class="review-card">
+                    <div class="review-stars">
+                        <% const rating = parseInt(review.rating, 10); %>
+                        <% for (let i = 1; i <= 5; i++) { %>
+                            <% if (i <= rating) { %>
+                                <span class="star filled">&#9733;</span>
+                            <% } else { %>
+                                <span class="star empty">&#9733;</span>
+                            <% } %>
                         <% } %>
-                    <% } %>
+                    </div>
+                    <p class="reviewer"><strong><%= review.username || review.first_name || "Anonymous" %></strong></p>
+                    <p class="review-date"><%= new Date(review.created_at).toLocaleDateString() %></p>
+                    <p class="review-comment"><%= review.comment %></p>
                 </div>
-
-                <p class="reviewer"><strong><%= review.reviewer_name %></strong></p>
-                <p class="review-date"><%= new Date(review.created_at).toLocaleDateString() %></p>
-                <p class="review-comment"><%= review.comment %></p>
-            </div>
-
-    <a href="/serviceRequest/form/<%= vehicle.slug %>" class="btn btn-primary">Request Service</a>
-    <a href="/reviews/form/<%= vehicle.vehicle_id %>" class="btn btn-secondary">View Reviews</a>
+            <% }) %>
+        <% } else { %>
+            <p class="no-reviews">There are no reviews yet. Be the first to leave one.</p>
+        <% } %>
+    </div>
 </div>
 
 <%- include("../partials/footer") %>

@@ -1,6 +1,7 @@
 // Imports
 import { getAllVehicles, getVehicleBySlug } from "../../models/vehicle/Vehicle.js";
 import { getCategoryById } from "../../models/category/Category.js";
+import { getVehicleReviews } from "../../models/forms/review.js";
 
 
 // Show all vehicles
@@ -33,10 +34,12 @@ export const showVehicleBySlug = async (req, res) => {
         }
 
         const category = await getCategoryById(vehicle.category_id);
-        res.render("vehicles/details", {
+        const reviews = await getVehicleReviews(vehicle.vehicle_id);
+        res.render("vehicles/detail", {
             title: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
             vehicle,
             category,
+            reviews,
             user: req.session.user,
             success: req.flash("success"),
             error: req.flash("error")

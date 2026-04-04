@@ -37,7 +37,7 @@ export const showAddVehicleForm = async (req, res) => {
     } catch (error) {
         console.error("Error loading add vehicle form:", error);
         req.flash("error", "Could not load form. Please try again later.");
-        res.redirect("/admin/vehicles/manage-vehicles");
+        res.redirect("/admin/manageVehicles");
     }
 };
 
@@ -45,14 +45,18 @@ export const showAddVehicleForm = async (req, res) => {
 export const showEditVehicleForm = async (req, res) => {
     try {
         const { id } = req.params;
-        const vehicle = await getVehicleById(id);   
+        const [vehicle, categories] = await Promise.all([
+            getVehicleById(id),
+            getAllCategories()
+        ]);
         if (!vehicle) {
             req.flash("error", "Vehicle not found");
-            return res.redirect("/admin/vehicles/manage-vehicles");
+            return res.redirect("/admin/manageVehicles");
         }
         res.render("admin/vehicles/edit", {
             title: "Edit Vehicle",
             vehicle,
+            categories,
             success: req.flash("success"),
             error: req.flash("error"),
             user: req.session.user
@@ -61,7 +65,7 @@ export const showEditVehicleForm = async (req, res) => {
     } catch (error) {
         console.error("Error loading edit vehicle form:", error);
         req.flash("error", "Could not load form. Please try again later.");
-        res.redirect("/admin/vehicles/manage-vehicles");
+        res.redirect("/admin/manageVehicles");
     }
 };
 
@@ -71,12 +75,12 @@ export const createVehiclePage = async (req, res) => {
         await createVehicle(req.body);
 
         req.flash("success", "Vehicle created successfully!");
-        res.redirect("/admin/vehicles/manage-vehicles");
+        res.redirect("/admin/manageVehicles");
 
     } catch (error) {
         console.error("Error creating vehicle:", error);
         req.flash("error", "Could not create vehicle. Please try again later.");
-        res.redirect("/admin/vehicles/manage-vehicles");
+        res.redirect("/admin/manageVehicles");
 
     }
 };
@@ -91,12 +95,12 @@ export const updateVehiclePage = async (req, res) => {
         });
 
         req.flash("success", "Vehicle updated successfully!");
-        res.redirect("/admin/vehicles/manage-vehicles");
+        res.redirect("/admin/manageVehicles");
 
     } catch (error) {
         console.error("Error updating vehicle:", error);
         req.flash("error", "Could not update vehicle. Please try again later.");
-        res.redirect("/admin/vehicles/manage-vehicles");
+        res.redirect("/admin/manageVehicles");
     }
 };
 // Handle delete vehicle action
@@ -106,11 +110,11 @@ export const deleteVehiclePage = async (req, res) => {
         const { id } = req.params;  
         await deleteVehicle(id);
         req.flash("success", "Vehicle deleted successfully!");
-        res.redirect("/admin/vehicles/manage-vehicles");
+        res.redirect("/admin/manageVehicles");
     
     } catch (error) {
         console.error("Error deleting vehicle:", error);
         req.flash("error", "Could not delete vehicle. Please try again later.");
-        res.redirect("/admin/vehicles/manage-vehicles");
+        res.redirect("/admin/manageVehicles");
     }
 };

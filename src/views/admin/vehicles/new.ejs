@@ -10,7 +10,7 @@
         <label>Category</label>
         <select name="categoryId" required>
             <% categories.forEach(category => { %>
-                <option value="<%= category.id %>"><%= category.name %></option>
+                <option value="<%= category.category_id %>"><%= category.name %></option>
             <% }) %>
         </select>
 
@@ -21,7 +21,7 @@
         <input type="text" name="model" required>
 
         <label>Year</label>
-        <input type="number" name="year" required>
+        <input type="text" name="year" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="e.g. 2024" required>
 
         <label>Slug</label>
         <input type="text" name="slug" required>
@@ -39,7 +39,7 @@
         <input type="text" name="image_url">
 
         <label>Available</label>
-        <select name="available" required>
+        <select name="isAvailable" required>
             <option value="true">Yes</option>
             <option value="false">No</option>
         </select>
