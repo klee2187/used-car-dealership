@@ -39,7 +39,7 @@ Deployed on Render
 
 -------Database Schema--------
 
-![alt text](<Screenshot 2026-04-03 210859.png>)
+![alt text](image.png)
 
 --------User Roles--------
 
